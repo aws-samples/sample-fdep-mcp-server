@@ -1,0 +1,12 @@
+# Prototype-led pipeline for pure prototyping engagements.
+# Skips heavy assessment; jumps straight into transformation work.
+
+stages:
+  - intent
+  - transform
+  - ai-native
+
+entry:
+  intent: "always"
+  transform: "intake complete"
+  ai-native: "prototype delivered"

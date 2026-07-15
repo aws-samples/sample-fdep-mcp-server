@@ -1,0 +1,39 @@
+id: fde-orchestration
+name: FDE Orchestration Layer
+version: 1.1.0
+summary: The meta-program that coordinates all other programs based on the customer intention. Documents the orchestration contract — how programs compose, how agents spawn, and how the resolver routes.
+owner: fde-partner-program
+
+stages:
+  - assess
+  - transform
+  - ai-native
+
+applicability:
+  - when: "true"
+    weight: 100
+
+skills:
+  - skills/init-engagement.md
+  - skills/load-customer-intention.md
+  - skills/explain-program-activation.md
+  - skills/describe-active-orchestration.md
+
+steering:
+  - steering/orchestration-contract.md
+
+templates:
+  - templates/intention-stub.md.hbs
+
+playbooks:
+  - playbooks/fde-first-customer-meeting.md
+
+exitCriteria:
+  - id: intention-loaded
+    description: "A valid intention has been loaded and persisted for the customer engagement."
+    check: artifact-exists
+    target: "state/intention.json"
+
+tags:
+  - orchestration
+  - meta

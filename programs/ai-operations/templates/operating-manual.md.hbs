@@ -1,0 +1,41 @@
+# AI operating manual template
+
+**Program:** AI Operations (AI Ops)
+**Customer:** {{customer.name}}
+**Date:** {{date}}
+**Owner:** {{owner}}
+
+## Context
+
+{{context}}
+
+## Inputs
+
+{{#each inputs}}
+- {{this.name}}: {{this.value}}
+{{/each}}
+
+## Findings
+
+{{#each findings}}
+### {{this.title}}
+
+**Severity:** {{this.severity}}
+**Evidence:** {{this.evidence}}
+**Recommendation:** {{this.recommendation}}
+**Owner:** {{this.owner}}
+**Due:** {{this.due}}
+
+{{/each}}
+
+## Decisions
+
+{{#each decisions}}
+- **{{this.title}}**: {{this.choice}} (alternatives considered: {{this.alternatives}})
+{{/each}}
+
+## Sign-off
+
+- [ ] Workload owner: {{signoff.owner}}
+- [ ] Relevant compliance / engineering: {{signoff.reviewer}}
+- [ ] Date: {{signoff.date}}

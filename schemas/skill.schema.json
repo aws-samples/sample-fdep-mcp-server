@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aine.dev/schemas/skill.schema.json",
+  "title": "Skill",
+  "description": "A discrete, invokable capability parsed from a markdown file with YAML frontmatter. See design.md §Data Models — Model 2.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "name",
+    "description",
+    "trigger",
+    "body"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "name": { "type": "string", "minLength": 1 },
+    "description": { "type": "string", "minLength": 1 },
+    "trigger": { "$ref": "#/$defs/skillTrigger" },
+    "inputs": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/skillInput" }
+    },
+    "outputs": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/skillOutput" }
+    },
+    "steeringRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+        "minLength": 1,
+        "maxLength": 64
+      },
+      "uniqueItems": true
+    },
+    "body": { "type": "string", "minLength": 1 }
+  },
+  "$defs": {
+    "skillTrigger": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "phrase"],
+          "properties": {
+            "kind": { "const": "command" },
+            "phrase": { "type": "string", "minLength": 1 }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "on"],
+          "properties": {
+            "kind": { "const": "auto" },
+            "on": { "type": "string", "enum": ["stage-entry", "artifact-missing"] }
+          }
+        }
+      ]
+    },
+    "skillInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "type", "required"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "type": { "type": "string", "enum": ["string", "number", "boolean", "path"] },
+        "required": { "type": "boolean" },
+        "prompt": { "type": "string", "minLength": 1 }
+      }
+    },
+    "skillOutput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "path", "kind"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!/)(?!.*\\.\\.(?:/|$))[^\\\\]+$"
+        },
+        "kind": { "type": "string", "enum": ["document", "code", "diagram"] }
+      }
+    }
+  }
+}

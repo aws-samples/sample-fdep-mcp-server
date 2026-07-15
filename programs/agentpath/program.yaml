@@ -1,0 +1,52 @@
+id: agentpath
+name: AgentPath
+version: 1.1.0
+summary: Agentic AI strategy and implementation guidance. Architecture patterns, human-in-the-loop design, agent safety, guardrail catalogue for enterprise agentic transformation.
+owner: fde-partner-program
+
+stages:
+  - transform
+  - ai-native
+
+applicability:
+  # Activates when the customer is building agentic systems
+  - when: "intent.includes('build')"
+    weight: 80
+  - when: "intent.includes('aidlc')"
+    weight: 70
+  - when: "intake.aim.platform >= 3"
+    weight: 75
+  - when: "intent.includes('gen-ai-rollout')"
+    weight: 60
+  - when: "intake.production.aiSystems >= 5"
+    weight: 50
+
+skills:
+  - skills/design-agent-architecture.md
+  - skills/design-hitl.md
+  - skills/build-guardrail-catalog.md
+
+steering:
+  - steering/agentic-principles.md
+  - steering/agent-safety.md
+
+templates:
+  - templates/agent-architecture.md.hbs
+
+playbooks:
+  - playbooks/fde-agent-design-session.md
+
+exitCriteria:
+  - id: architecture-documented
+    description: "Agent architecture is documented with topology, tools, guardrails."
+    check: artifact-exists
+    target: "artifacts/agents/architecture-*.md"
+  - id: hitl-policy-documented
+    description: "HITL policy is documented and code-reviewed."
+    check: artifact-exists
+    target: "artifacts/agents/hitl-*.md"
+
+tags:
+  - agentic-ai
+  - architecture
+  - automation

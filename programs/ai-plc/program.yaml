@@ -1,0 +1,48 @@
+id: ai-plc
+name: AI Product Lifecycle
+version: 1.1.0
+summary: Close the product-discovery-to-delivery gap by integrating AI across the product lifecycle. Working-backwards inputs, KPI taxonomy, prototyping cycle, measurement scaffold tied to revenue, trust, and veracity.
+owner: fde-partner-program
+
+stages:
+  - transform
+
+applicability:
+  - when: "intent.includes('prototyping')"
+    weight: 90
+  - when: "intent.includes('build')"
+    weight: 65
+  - when: "intent.includes('gen-ai-rollout')"
+    weight: 75
+  - when: "intake.aim.business <= 3"
+    weight: 60
+
+skills:
+  - skills/facilitate-working-backwards.md
+  - skills/define-kpi-taxonomy.md
+  - skills/instrument-prototype-measurement.md
+
+steering:
+  - steering/ai-plc-principles.md
+  - steering/kpi-taxonomy.md
+
+templates:
+  - templates/kpi-taxonomy.md.hbs
+
+playbooks:
+  - playbooks/fde-working-backwards.md
+
+exitCriteria:
+  - id: working-backwards-complete
+    description: "A working-backwards artifact exists with press release + FAQ + KPI taxonomy."
+    check: artifact-exists
+    target: "artifacts/pdlc/working-backwards-*.md"
+  - id: kpis-instrumented
+    description: "Revenue / trust / veracity KPIs are wired into the prototype with documented measurement points."
+    check: artifact-exists
+    target: "artifacts/pdlc/kpi-*.yaml"
+
+tags:
+  - product-management
+  - developer-productivity
+  - measurement

@@ -1,0 +1,106 @@
+id: ai-native-app-builder
+name: AI Native App Builder
+version: 1.1.0
+summary: Builds AI-native applications on AWS using the AI Native multi-layer architecture — routes app type to the correct AWS accelerators, CDK patterns, and agent frameworks.
+owner: fde-partner-program
+
+stages:
+  - transform
+  - ai-native
+
+# Activation logic adapted for intention-driven model.
+# Primary trigger: goals contain 'build' or 'prototyping'.
+# Also activates when 'aidlc' is a goal (AI-DLC always builds a workload).
+applicability:
+  - when: "intent.includes('build')"
+    weight: 90
+  - when: "intent.includes('prototyping')"
+    weight: 80
+  - when: "intent.includes('aidlc')"
+    weight: 70
+
+skills:
+  - skills/build-aws-app.md
+  - skills/scaffold-app-type.md
+  - skills/deploy-agent-to-agentcore.md
+
+steering:
+  - steering/layer-methodology.md
+  - steering/app-level.md
+  - steering/bedrock-model-selection.md
+  - steering/consult-references.md
+  - steering/csp-s3-images.md
+  - steering/deploy-verify-loop.md
+  - steering/poc-async-default.md
+  - steering/s3-presigned-urls.md
+  - steering/ui-design-system.md
+  - steering/verify-aws-versions.md
+
+templates: []
+
+playbooks: []
+
+# Reference material — 26 files covering the AI Native multi-layer architecture (18)
+# plus deep-dive content for the Insurance vertical (4) and AgentCore deployment
+# (4). These render into the engagement so the agent can navigate to the right
+# detail when running /build-app, /scaffold-app, or deploying with agentcore.
+references:
+  # multi-layer architecture
+  - references/cross-deployment-guide.md
+  - references/cross-environment-config.md
+  - references/cross-governance-security.md
+  - references/cross-industry-verticals.md
+  - references/cross-observability-evaluation.md
+  - references/cross-resilience-operations.md
+  - references/cross-spec-driven-methodology.md
+  - references/cross-testing-quality.md
+  - references/layer-1-enterprise-integrations.md
+  - references/layer-2-enterprise-resources.md
+  - references/layer-3-ai-data-ontology.md
+  - references/layer-4-ai-workflow.md
+  - references/layer-5-ai-app-creation.md
+  - references/layer-5-ui-implementation.md
+  - references/layer-5-ui-design-system.md
+  - references/layer-5b-ai-model-management.md
+  - references/layer-6-ai-agents.md
+  - references/layer-7-developer-experience.md
+  - references/layer-infra-cloud-foundation.md
+  # Industry deep-dive: Insurance claims processing
+  - references/industry-insurance-claims-overview.md
+  - references/industry-insurance-claims-architecture.md
+  - references/industry-insurance-claims-strands.md
+  - references/industry-insurance-claims-samples.md
+  # Deployment deep-dive: Bedrock AgentCore
+  - references/deployment-agentcore-overview.md
+  - references/deployment-agentcore-cli.md
+  - references/deployment-agentcore-services.md
+  - references/deployment-agentcore-starter-toolkit.md
+
+exitCriteria:
+  - id: app-spec-created
+    description: "A Kiro spec exists with requirements mapped to FDE layers and tasks ordered by build phases."
+    check: artifact-exists
+    target: "artifacts/ai-native-app-builder/spec-*.md"
+  - id: app-deployed
+    description: "The application is deployed to AWS and accessible via its endpoint."
+    check: manual
+
+# No dependsOn — the old discovery dependency is removed. The intention file's
+# workload block and notes field provide the structured requirements that
+# ai-native-app-builder needs. The build skills can further enrich the intention via
+# fde_patch_intention if additional context is gathered during execution.
+dependsOn: []
+
+tags:
+  - aws
+  - application
+  - ai-native
+  - cdk
+  - strands-agents
+  - bedrock
+  - prototype
+  - poc
+  - claims
+  - chatbot
+  - rag
+  - document-processing

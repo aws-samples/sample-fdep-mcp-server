@@ -1,0 +1,36 @@
+id: life-sciences-lens
+kind: lens
+industry: life-sciences
+activation:
+  combine: any
+  rules:
+    - when: "industry === 'life-sciences'"
+      weight: 100
+      reason: "customer industry matches life sciences (pharma, biotech, clinical trials)"
+overlays:
+  - targetProgram: responsible-ai
+    addSteering:
+      - steering/gxp-compliance.md
+      - steering/clinical-data-integrity.md
+    addExitCriteria:
+      - id: gxp-compliance-review
+        description: "GxP compliance review completed for AI systems involved in drug development or manufacturing."
+        check: artifact-exists
+        target: "artifacts/rai-reviews/gxp-*.md"
+    additionalTags:
+      - regulated-industry
+      - life-sciences
+  - targetProgram: ai-operations
+    addSteering:
+      - steering/validation-lifecycle.md
+    addSkills:
+      - skills/computerized-system-validation.md
+    additionalTags:
+      - regulated-industry
+      - life-sciences
+tags:
+  - life-sciences
+  - pharma
+  - biotech
+  - regulated
+  - gxp

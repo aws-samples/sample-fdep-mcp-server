@@ -1,0 +1,85 @@
+{
+  "$comment": "Declarative adapter manifest. Source of truth for the harness target set. Each entry binds a HarnessTarget id to the module that exports the adapter. Paths in `module` are ESM import specifiers resolvable from core/src/renderer/registry.ts. See design.md — Multi-Platform Adapter Registry.",
+  "adapters": [
+    {
+      "id": "kiro",
+      "style": "file",
+      "targetDir": ".kiro",
+      "module": "../../../adapters/kiro/adapter.js"
+    },
+    {
+      "id": "claude",
+      "style": "file",
+      "targetDir": ".claude",
+      "module": "../../../adapters/claude/adapter.js"
+    },
+    {
+      "id": "copilot",
+      "style": "file",
+      "targetDir": ".github",
+      "module": "../../../adapters/copilot/adapter.js"
+    },
+    {
+      "id": "cursor",
+      "style": "file",
+      "targetDir": ".cursor",
+      "module": "../../../adapters/cursor/adapter.js"
+    },
+    {
+      "id": "codex",
+      "style": "file",
+      "targetDir": ".codex",
+      "module": "../../../adapters/codex/adapter.js"
+    },
+    {
+      "id": "cline",
+      "style": "file",
+      "targetDir": ".clinerules",
+      "module": "../../../adapters/cline/adapter.js"
+    },
+    {
+      "id": "continue",
+      "style": "file",
+      "targetDir": ".continue",
+      "module": "../../../adapters/continue/adapter.js"
+    },
+    {
+      "id": "aider",
+      "style": "file",
+      "targetDir": ".aider",
+      "module": "../../../adapters/aider/adapter.js"
+    },
+    {
+      "id": "windsurf",
+      "style": "file",
+      "targetDir": ".windsurf",
+      "module": "../../../adapters/windsurf/adapter.js"
+    },
+    {
+      "id": "zed",
+      "style": "file",
+      "targetDir": ".zed",
+      "module": "../../../adapters/zed/adapter.js"
+    },
+    {
+      "style": "file",
+    },
+    {
+      "id": "chatgpt-custom-gpt",
+      "style": "file",
+      "targetDir": ".chatgpt",
+      "module": "../../../adapters/chatgpt-custom-gpt/adapter.js"
+    },
+    {
+      "id": "gemini-code-assist",
+      "style": "file",
+      "targetDir": ".gemini",
+      "module": "../../../adapters/gemini-code-assist/adapter.js"
+    },
+    {
+      "id": "mcp",
+      "style": "mcp",
+      "module": "../../../adapters/mcp/adapter.js"
+    }
+  ]
+}

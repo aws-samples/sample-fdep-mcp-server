@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aine.dev/schemas/engagement.schema.json",
+  "title": "EngagementState",
+  "description": "The per-customer engagement state persisted at engagements/<customer>/state/current.yaml. See design.md §Data Models — Model 5.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "customer",
+    "intent",
+    "intake",
+    "currentStage",
+    "decisions",
+    "startedAt",
+    "updatedAt"
+  ],
+  "properties": {
+    "customer": {
+      "type": "string",
+      "description": "Kebab-case customer identifier; matches the engagements/<customer>/ directory name.",
+      "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "intent": {
+      "type": "array",
+      "description": "Intent tags captured from intake (e.g. ['gen-ai-rollout', 'responsible-ai']). At least one intent is required.",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "intake": {
+      "type": "object",
+      "description": "Raw intake answers, preserved verbatim for auditing and replanning. Free-form per pipeline intake configuration.",
+      "additionalProperties": true
+    },
+    "aimTier": {
+      "type": "integer",
+      "description": "Current AIM tier estimate, 1..5. Optional until the assess stage closes.",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "currentStage": {
+      "$ref": "#/$defs/pipelineStage"
+    },
+    "decisions": {
+      "type": "array",
+      "description": "Snapshot of the append-only decision log; the authoritative log lives at state/history.jsonl.",
+      "items": {
+        "$ref": "#/$defs/decision"
+      }
+    },
+    "startedAt": {
+      "type": "string",
+      "description": "ISO 8601 datetime when the engagement was initialized.",
+      "format": "date-time",
+      "minLength": 1
+    },
+    "updatedAt": {
+      "type": "string",
+      "description": "ISO 8601 datetime of the most recent state-changing operation.",
+      "format": "date-time",
+      "minLength": 1
+    }
+  },
+  "$defs": {
+    "pipelineStage": {
+      "type": "string",
+      "enum": [
+        "intent",
+        "assess",
+        "transform",
+        "ai-native"
+      ]
+    },
+    "decision": {
+      "type": "object",
+      "description": "A single entry in the append-only decision log.",
+      "additionalProperties": false,
+      "required": [
+        "ts",
+        "actor",
+        "kind",
+        "detail"
+      ],
+      "properties": {
+        "ts": {
+          "type": "string",
+          "description": "ISO 8601 datetime at which the decision was recorded.",
+          "format": "date-time",
+          "minLength": 1
+        },
+        "actor": {
+          "type": "string",
+          "description": "Origin of the decision: human FDE, a harness tool hook, or the planner.",
+          "enum": [
+            "fde",
+            "harness",
+            "planner"
+          ]
+        },
+        "kind": {
+          "type": "string",
+          "description": "Stable kind tag for the decision (e.g. 'engagement-created', 'stage-advance', 'tier-updated').",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "detail": {
+          "type": "object",
+          "description": "Structured payload describing the decision. Free-form per kind.",
+          "additionalProperties": true
+        }
+      }
+    }
+  }
+}

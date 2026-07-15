@@ -1,0 +1,38 @@
+﻿# Dependencies
+node_modules/
+
+# Environment and secrets
+.env
+.env.*
+*.pem
+*.key
+credentials.json
+secrets.json
+
+# Engagement customer data
+engagements/*/
+
+# Keep the engagements directory itself
+!engagements/.gitkeep
+
+# Build artifacts (optional - remove if you want dist tracked)
+# core/dist/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.tgz
+.tmp-*
+_reg.json
+registry.*.json

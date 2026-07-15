@@ -1,0 +1,19 @@
+{
+  "name": "@ace/core",
+  "version": "0.1.0",
+  "private": true,
+  "description": "FDEP core — loader, resolver, renderer, state manager, MCP server",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.29.0"
+  }
+}

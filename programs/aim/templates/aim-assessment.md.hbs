@@ -1,0 +1,53 @@
+# AIM Assessment — {{customer}}
+
+**Date:** {{date}}
+**Facilitator:** {{facilitator}}
+**Overall Tier:** {{overallTier}}  (minimum across the six perspectives — the weakest link)
+**Bottleneck perspective:** {{bottleneck}}
+
+## Business — Tier {{business.tier}}
+
+{{business.evidence}}
+
+## People — Tier {{people.tier}}
+
+{{people.evidence}}
+
+## Governance — Tier {{governance.tier}}
+
+{{governance.evidence}}
+
+## Platform — Tier {{platform.tier}}
+
+{{platform.evidence}}
+
+## Security — Tier {{security.tier}}
+
+{{security.evidence}}
+
+## Operations — Tier {{operations.tier}}
+
+{{operations.evidence}}
+
+## Top 3 capability gaps
+
+{{#each capabilityGaps}}
+- **{{this.capability}}** ({{this.perspective}}) — {{this.description}}
+  - Downstream program: {{this.downstreamProgram}}
+{{/each}}
+
+## Key concerns (verbatim, from the executive sponsor)
+
+{{concerns}}
+
+## Recommended next steps
+
+{{nextSteps}}
+
+## Routing to downstream programs
+
+Based on the scores above and the customer's intake, the AINE toolkit will route this engagement to:
+
+{{#each activatedPrograms}}
+- **{{this.programId}}** — {{this.reason}} (priority score {{this.score}})
+{{/each}}

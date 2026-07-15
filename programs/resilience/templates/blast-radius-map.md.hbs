@@ -1,0 +1,37 @@
+# Blast Radius Map - {{customer}}
+
+**Date:** {{date}}
+**Workload:** {{workload}}
+**Facilitator:** {{facilitator}}
+
+## AI Dependencies
+
+{{#each dependencies}}
+### {{this.name}}
+
+| Field | Value |
+|-------|-------|
+| Purpose | {{this.purpose}} |
+| Failure mode | {{this.failureMode}} |
+| Blast radius | {{this.blastRadius}} |
+| Detection | {{this.detection}} |
+| Fallback | {{this.fallback}} |
+| RTO | {{this.rto}} |
+| RPO | {{this.rpo}} |
+| Owner | {{this.owner}} |
+
+{{/each}}
+
+## Isolation Boundaries
+
+{{#each boundaries}}
+- **{{this.name}}**: {{this.description}}
+{{/each}}
+
+## Summary
+
+- Total AI dependencies: {{totalDependencies}}
+- Contained failures: {{containedCount}}
+- Partial failures: {{partialCount}}
+- Total failures: {{totalFailureCount}}
+- Dependencies without fallback: {{noFallbackCount}}
