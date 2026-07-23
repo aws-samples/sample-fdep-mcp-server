@@ -62,9 +62,6 @@
       "module": "../../../adapters/zed/adapter.js"
     },
     {
-      "style": "file",
-    },
-    {
       "id": "chatgpt-custom-gpt",
       "style": "file",
       "targetDir": ".chatgpt",

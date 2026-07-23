@@ -8,27 +8,8 @@ An intention-driven harness for forward-deployed engineers. Drop one intention f
 
 ### Prerequisites
 
-- **Node.js 20+**
+- **Node.js 22+** (LTS)
 - **AWS MCP Server** — required for building applications with FDE programs (provides AWS API access for CDK deployments, Bedrock, S3, etc.)
-
-Configure the AWS MCP server alongside the FDE kit in your MCP client:
-
-```json
-{
-  "mcpServers": {
-    "fdep-mcp": {
-      "command": "node",
-      "args": ["/path/to/fdep-kit/bin/fdep-mcp.mjs"]
-    },
-    "aws-mcp": {
-      "command": "uvx",
-      "args": ["mcp-proxy-for-aws@latest", "https://aws-mcp.us-east-1.api.aws/mcp"]
-    }
-  }
-}
-```
-
-> **Note:** The FDE kit itself makes no AWS calls — it renders configuration files locally. The AWS MCP server is needed by your agent when it acts on the rendered skills (deploying CDK stacks, creating Bedrock resources, etc.).
 
 ### Setup
 
@@ -39,7 +20,91 @@ npm install
 npm run build
 ```
 
-Restart your MCP client. Ask the agent: *"List the FDEP programs"* — done.
+### MCP Client Configuration
+
+Configure the FDE kit and AWS MCP server in your MCP client config:
+
+<details>
+<summary><b>macOS / Linux</b></summary>
+
+**Kiro:** `~/.kiro/settings/mcp.json`
+**Claude Desktop:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+**Cursor:** `.cursor/mcp.json` in your project
+
+```json
+{
+  "mcpServers": {
+    "fdep-mcp": {
+      "command": "node",
+      "args": ["/absolute/path/to/fdep-kit/bin/fdep-mcp.mjs"]
+    },
+    "aws-mcp": {
+      "command": "uvx",
+      "args": ["mcp-proxy-for-aws@latest", "https://aws-mcp.us-east-1.api.aws/mcp"]
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+<summary><b>Windows (PowerShell)</b></summary>
+
+**Kiro:** `%USERPROFILE%\.kiro\settings\mcp.json`
+**Claude Desktop:** `%APPDATA%\Claude\claude_desktop_config.json`
+**Cursor:** `.cursor\mcp.json` in your project
+
+```json
+{
+  "mcpServers": {
+    "fdep-mcp": {
+      "command": "node",
+      "args": ["C:\\Users\\<username>\\path\\to\\fdep-kit\\bin\\fdep-mcp.mjs"]
+    },
+    "aws-mcp": {
+      "command": "uvx",
+      "args": ["mcp-proxy-for-aws@latest", "https://aws-mcp.us-east-1.api.aws/mcp"]
+    }
+  }
+}
+```
+
+> **Note:** Use double backslashes (`\\`) in JSON paths on Windows, or forward slashes (`/`) which also work.
+
+</details>
+
+<details>
+<summary><b>Ubuntu / WSL</b></summary>
+
+**Kiro:** `~/.kiro/settings/mcp.json`
+**Claude Desktop (via WSL):** Access from Windows side at `%APPDATA%\Claude\claude_desktop_config.json`
+
+```json
+{
+  "mcpServers": {
+    "fdep-mcp": {
+      "command": "node",
+      "args": ["/home/<username>/fdep-kit/bin/fdep-mcp.mjs"]
+    },
+    "aws-mcp": {
+      "command": "uvx",
+      "args": ["mcp-proxy-for-aws@latest", "https://aws-mcp.us-east-1.api.aws/mcp"]
+    }
+  }
+}
+```
+
+If `uvx` is not installed, install `uv` first:
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+</details>
+
+> **Note:** The FDE kit itself makes no AWS calls — it renders configuration files locally. The AWS MCP server is needed by your agent when it acts on the rendered skills (deploying CDK stacks, creating Bedrock resources, etc.).
+
+Restart your MCP client. Ask the agent: *"List the FDE programs"* — done.
 
 ---
 

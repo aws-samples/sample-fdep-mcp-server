@@ -29,6 +29,7 @@
       "enum": [
         "financial-services",
         "healthcare",
+        "life-sciences",
         "entertainment",
         "public-sector",
         "retail",
