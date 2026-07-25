@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aine.dev/schemas/lens.schema.json",
+  "title": "Lens",
+  "description": "An industry overlay manifest that composes with base Programs by adding or overriding steering, skills, exit criteria, or tags. Lenses never silently remove program behavior; they can augment (add*) or override (override*). See design.md Lens Schema and Composition Semantics.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "kind",
+    "industry",
+    "activation",
+    "overlays"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Kebab-case, globally unique lens identifier (e.g. 'financial-services-lens').",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "kind": {
+      "const": "lens"
+    },
+    "industry": {
+      "type": "string",
+      "description": "Industry vertical this lens applies to. Must match the intention schema industry enum.",
+      "enum": [
+        "financial-services",
+        "healthcare",
+        "life-sciences",
+        "entertainment",
+        "public-sector",
+        "retail",
+        "manufacturing",
+        "other"
+      ]
+    },
+    "activation": {
+      "$ref": "program.schema.json#/$defs/activationBlock"
+    },
+    "overlays": {
+      "type": "array",
+      "description": "Per-program overlays applied when this lens activates. At least one overlay is required.",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/lensOverlay"
+      }
+    },
+    "tags": {
+      "type": "array",
+      "description": "Free-form tags for search and filtering.",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    }
+  },
+  "$defs": {
+    "lensOverlay": {
+      "type": "object",
+      "description": "A single program overlay: augments or overrides the targeted program's steering, skills, exit criteria, or tags.",
+      "additionalProperties": false,
+      "required": [
+        "targetProgram"
+      ],
+      "properties": {
+        "targetProgram": {
+          "type": "string",
+          "description": "The program id this overlay augments.",
+          "pattern": "^[a-z][a-z0-9-]*$",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "addSteering": {
+          "type": "array",
+          "description": "Relative paths to steering files appended to the target program's steering (append-then-dedupe).",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "addSkills": {
+          "type": "array",
+          "description": "Relative paths to skill files appended to the target program's skills (append-then-dedupe).",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "addExitCriteria": {
+          "type": "array",
+          "description": "Exit criteria appended to the target program's exit criteria. Entries whose id already exists in the base are silently skipped unless this overlay also overrides them.",
+          "items": {
+            "$ref": "program.schema.json#/$defs/exitCriterion"
+          }
+        },
+        "overrideExitCriteria": {
+          "type": "array",
+          "description": "Exit criteria that replace the base program's exit criteria by id. Missing ids raise a diagnostic.",
+          "items": {
+            "$ref": "program.schema.json#/$defs/exitCriterion"
+          }
+        },
+        "additionalTags": {
+          "type": "array",
+          "description": "Additional tags appended to the target program's tags.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}

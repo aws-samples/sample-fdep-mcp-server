@@ -1,0 +1,19 @@
+{
+  "name": "@fde/core",
+  "version": "0.5.0",
+  "private": true,
+  "description": "FDE core — loader, resolver, renderer, state manager, MCP server",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "engines": {
+    "node": ">=22"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.29.0"
+  }
+}

@@ -1,0 +1,49 @@
+id: aim
+name: AI Maturity Assessment
+version: 1.0.0
+summary: Assess enterprise AI maturity across six perspectives (Business, People, Governance, Platform, Security, Operations) and produce a tier-appropriate roadmap. Based on the AWS Generative AI Maturity Model (https://docs.aws.amazon.com/prescriptive-guidance/latest/strategy-gen-ai-maturity-model/).
+owner: fde-partner-program
+
+stages:
+  - assess
+  - transform
+  - ai-native
+
+applicability:
+  - when: "aimTier < 5"
+    weight: 90
+  - when: "intent.includes('responsible-ai')"
+    weight: 70
+  - when: "intent.includes('gen-ai-rollout')"
+    weight: 60
+
+skills:
+  - skills/run-aim-assessment.md
+  - skills/produce-aim-roadmap.md
+
+steering:
+  - steering/aim-framework.md
+
+templates:
+  - templates/aim-assessment.md.hbs
+
+playbooks:
+  - playbooks/fde-aim-facilitation.md
+
+exitCriteria:
+  - id: assessment-complete
+    description: "An AIM assessment artifact exists covering all six perspectives with cited evidence."
+    check: artifact-exists
+    target: "artifacts/assessments/aim-*.md"
+  - id: roadmap-delivered
+    description: "A horizon-based roadmap has been produced and reviewed with the executive sponsor."
+    check: manual
+  - id: state-reflects-tier
+    description: "Engagement state records the overall AIM tier and downstream programs are routed."
+    check: state-matches
+    target: "aimTier"
+
+tags:
+  - assessment
+  - maturity-model
+  - entry-point

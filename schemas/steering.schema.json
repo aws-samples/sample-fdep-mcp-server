@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aine.dev/schemas/steering.schema.json",
+  "title": "SteeringFile",
+  "description": "A steering file parsed from a markdown file with YAML frontmatter. Steering is injected into the agent context, either always-on, auto-triggered by a glob match, or manually referenced. See design.md §Data Models — Model 3.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "inclusion",
+    "priority",
+    "body"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Kebab-case steering identifier unique within its owning program.",
+      "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "inclusion": {
+      "type": "string",
+      "description": "How this steering is loaded by the renderer. 'always' = always-on; 'auto' = activated when an open file matches 'match'; 'manual' = referenced by a skill or user.",
+      "enum": ["always", "auto", "manual"]
+    },
+    "match": {
+      "type": "string",
+      "description": "Glob pattern required when inclusion is 'auto'; forbidden otherwise (the planner may still tolerate an unused value but the loader should reject).",
+      "minLength": 1
+    },
+    "priority": {
+      "type": "integer",
+      "description": "Load priority; higher values are loaded first by the renderer.",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "body": {
+      "type": "string",
+      "description": "Markdown body of the steering content.",
+      "minLength": 1
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "inclusion": { "const": "auto" } },
+        "required": ["inclusion"]
+      },
+      "then": {
+        "required": ["match"],
+        "properties": {
+          "match": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  ]
+}

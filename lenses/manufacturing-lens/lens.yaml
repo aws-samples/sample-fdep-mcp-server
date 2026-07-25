@@ -1,0 +1,26 @@
+id: manufacturing-lens
+kind: lens
+industry: manufacturing
+activation:
+  combine: any
+  rules:
+    - when: "industry === 'manufacturing'"
+      weight: 100
+      reason: "customer industry matches manufacturing"
+overlays:
+  - targetProgram: responsible-ai
+    addSteering:
+      - steering/industrial-ai-safety.md
+    additionalTags:
+      - manufacturing
+      - iot
+  - targetProgram: ai-operations
+    addSteering:
+      - steering/industrial-data-governance.md
+    additionalTags:
+      - manufacturing
+tags:
+  - manufacturing
+  - industrial
+  - iot
+  - operational-technology

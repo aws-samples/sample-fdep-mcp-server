@@ -1,0 +1,24 @@
+id: healthcare-lens
+kind: lens
+industry: healthcare
+activation:
+  combine: any
+  rules:
+    - when: "industry === 'healthcare'"
+      weight: 100
+      reason: "customer industry matches healthcare"
+overlays:
+  - targetProgram: responsible-ai
+    addSteering:
+      - steering/hipaa-phi-handling.md
+      - steering/samd-guidance.md
+    additionalTags:
+      - regulated-industry
+  - targetProgram: ai-operations
+    addSkills:
+      - skills/phi-access-logging.md
+    additionalTags:
+      - regulated-industry
+tags:
+  - healthcare
+  - regulated

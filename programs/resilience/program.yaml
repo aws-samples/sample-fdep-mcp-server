@@ -1,0 +1,51 @@
+id: resilience
+name: AI Resilience
+version: 1.0.0
+summary: Build fault-tolerant AI systems with production-grade operational practices. Blast radius mapping, graceful degradation, chaos engineering, resilience metrics, and program coordination. Based on the AWS Well-Architected Reliability Pillar (https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/) and AWS Resilience Hub (https://docs.aws.amazon.com/resilience-hub/latest/userguide/what-is.html).
+owner: fde-partner-program
+
+stages:
+  - transform
+  - ai-native
+
+applicability:
+  - when: "intent.includes('resilience')"
+    weight: 95
+  - when: "intake.aim.operations <= 2"
+    weight: 80
+  - when: "intake.production.aiSystems >= 5"
+    weight: 70
+
+skills:
+  - skills/map-blast-radius.md
+  - skills/design-graceful-degradation.md
+  - skills/run-chaos-day.md
+  - skills/track-resilience-metrics.md
+
+steering:
+  - steering/resilience-principles.md
+  - steering/ai-failure-modes.md
+
+templates:
+  - templates/blast-radius-map.md.hbs
+
+playbooks:
+  - playbooks/fde-resilience-facilitation.md
+
+exitCriteria:
+  - id: blast-radius-mapped
+    description: "A blast-radius map exists covering every in-scope AI dependency."
+    check: artifact-exists
+    target: "artifacts/resilience/blast-radius-*.md"
+  - id: graceful-degradation-defined
+    description: "A graceful degradation policy is documented and code-reviewed."
+    check: artifact-exists
+    target: "artifacts/resilience/graceful-*.md"
+  - id: resilience-metrics-tracked
+    description: "MTTR, false-positive alarm rate, and blast-radius coverage are measured."
+    check: manual
+
+tags:
+  - resilience
+  - operations
+  - reliability

@@ -1,0 +1,32 @@
+id: financial-services-lens
+kind: lens
+industry: financial-services
+activation:
+  combine: any
+  rules:
+    - when: "industry === 'financial-services'"
+      weight: 100
+      reason: "financial services industry match"
+overlays:
+  - targetProgram: responsible-ai
+    addSteering:
+      - steering/pci-dss-steering.md
+      - steering/sox-model-risk-steering.md
+      - steering/regulatory-reporting.md
+      - steering/model-risk-governance.md
+      - steering/separation-of-duties.md
+    addExitCriteria:
+      - id: model-risk-governance-doc
+        description: "SR 11-7 aligned model risk governance doc produced."
+        check: artifact-exists
+        target: "artifacts/rai-reviews/sr-11-7-*.md"
+    additionalTags:
+      - fs-regulated
+  - targetProgram: ai-operations
+    addSkills:
+      - skills/audit-trail-setup.md
+    additionalTags:
+      - fs-regulated
+tags:
+  - financial-services
+  - regulated

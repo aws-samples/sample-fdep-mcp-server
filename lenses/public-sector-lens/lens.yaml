@@ -1,0 +1,27 @@
+id: public-sector-lens
+kind: lens
+industry: public-sector
+activation:
+  combine: any
+  rules:
+    - when: "industry === 'public-sector'"
+      weight: 100
+      reason: "customer industry matches public sector"
+overlays:
+  - targetProgram: responsible-ai
+    addSteering:
+      - steering/digital-sovereignty.md
+      - steering/citizen-ai-transparency.md
+    additionalTags:
+      - public-sector
+      - sovereign
+  - targetProgram: ai-operations
+    addSteering:
+      - steering/data-residency.md
+    additionalTags:
+      - public-sector
+tags:
+  - public-sector
+  - government
+  - sovereignty
+  - regulated

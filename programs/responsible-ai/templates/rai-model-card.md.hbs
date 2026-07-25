@@ -1,0 +1,51 @@
+# Model Card: {{model.name}}
+
+**Version:** {{model.version}}
+**Owner:** {{model.owner}}
+**Last updated:** {{model.updatedAt}}
+
+## Intended use
+
+{{model.intendedUse}}
+
+**In scope:** {{model.inScope}}
+**Out of scope:** {{model.outOfScope}}
+
+## Training / fine-tuning data
+
+**Source:** {{model.dataSource}}
+**Licence / consent basis:** {{model.dataConsent}}
+**Filtering applied:** {{model.dataFiltering}}
+**Retrieval corpus (if RAG):** {{model.ragCorpus}}
+
+## Performance
+
+| Metric | Value | Eval set |
+|---|---|---|
+{{#each model.metrics}}
+| {{this.name}} | {{this.value}} | {{this.evalSet}} |
+{{/each}}
+
+## Fairness
+
+{{model.fairness.analysis}}
+
+**Disaggregated performance:**
+{{model.fairness.disaggregated}}
+
+## Known limitations
+
+{{#each model.limitations}}
+- {{this}}
+{{/each}}
+
+## Operational guardrails
+
+- Input filters: {{model.guardrails.input}}
+- Output filters: {{model.guardrails.output}}
+- Abstain conditions: {{model.guardrails.abstain}}
+- Human-in-the-loop: {{model.guardrails.hitl}}
+
+## Incident response
+
+{{model.incidentResponse}}

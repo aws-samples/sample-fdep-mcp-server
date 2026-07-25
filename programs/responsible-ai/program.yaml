@@ -1,0 +1,56 @@
+id: responsible-ai
+name: Responsible AI
+version: 1.0.0
+summary: Governance frameworks, guardrails, and ethical AI implementation guidance for enterprise customers building or operating AI systems. Five-dimension RAI reviews, model cards, content-safety stacks, red-team exercises. Based on AWS Responsible AI guidance (https://aws.amazon.com/ai/responsible-ai/) and Amazon Bedrock Guardrails.
+owner: fde-partner-program
+
+stages:
+  - transform
+  - ai-native
+
+applicability:
+  - when: "intake.regulated === true"
+    weight: 95
+  - when: "intent.includes('responsible-ai')"
+    weight: 90
+  - when: "aimTier <= 2"
+    weight: 70
+  - when: "aimTier >= 2"
+    weight: 40
+
+skills:
+  - skills/run-rai-review.md
+  - skills/design-rai-guardrails.md
+  - skills/produce-model-card.md
+  - skills/configure-content-safety.md
+  - skills/redteam-deployment.md
+
+steering:
+  - steering/rai-framework.md
+  - steering/rai-five-dimensions.md
+
+templates:
+  - templates/rai-review.md.hbs
+  - templates/rai-model-card.md.hbs
+
+playbooks:
+  - playbooks/fde-rai-review-facilitation.md
+
+exitCriteria:
+  - id: rai-review-complete
+    description: "A Responsible AI review artifact exists for the primary workload with all five dimensions assessed."
+    check: artifact-exists
+    target: "artifacts/rai-reviews/rai-*.md"
+  - id: guardrails-designed
+    description: "A guardrail design artifact exists addressing every high-risk finding."
+    check: artifact-exists
+    target: "artifacts/rai-guardrails/guardrails-*.md"
+  - id: model-card-published
+    description: "At least one model card has been produced and signed off."
+    check: artifact-exists
+    target: "artifacts/rai-model-cards/*.md"
+
+tags:
+  - responsible-ai
+  - governance
+  - compliance

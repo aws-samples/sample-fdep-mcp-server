@@ -1,0 +1,43 @@
+{
+  "name": "fde-kit",
+  "version": "0.5.0",
+  "type": "module",
+  "description": "Partner FDE Delivery Kit — loop-engineered MCP server for building AI-native apps on AWS",
+  "bin": {
+    "fdep-mcp": "./bin/fdep-mcp.mjs"
+  },
+  "main": "./core/dist/index.js",
+  "types": "./core/dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "build:demo": "npm --prefix web run build:demo",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest --run",
+    "test:watch": "vitest",
+    "lint": "eslint \"core/**/*.ts\" \"adapters/**/*.ts\"",
+    "scan:secrets": "node core/dist/core/src/security/secrets-scan-cli.js",
+    "scan:portability": "node core/dist/core/src/security/portability-scan-cli.js",
+    "precommit": "npm run typecheck && npm run lint && npm run scan:secrets && npm run scan:portability && npm run test"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "handlebars": "4.7.9",
+    "yaml": "2.9.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.61.0",
+    "@types/node": "22.20.1",
+    "eslint": "9.28.0",
+    "typescript-eslint": "8.34.0",
+    "fast-check": "3.23.2",
+    "typescript": "5.8.3",
+    "vitest": "4.1.9"
+  },
+  "workspaces": [
+    "core"
+  ]
+}

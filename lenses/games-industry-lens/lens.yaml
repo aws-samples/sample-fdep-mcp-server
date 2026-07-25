@@ -1,0 +1,24 @@
+id: games-industry-lens
+kind: lens
+industry: entertainment
+activation:
+  combine: any
+  rules:
+    - when: "industry === 'entertainment'"
+      weight: 100
+      reason: "customer industry matches entertainment/gaming"
+overlays:
+  - targetProgram: responsible-ai
+    addSteering:
+      - steering/player-safety.md
+    additionalTags:
+      - gaming
+  - targetProgram: resilience
+    addSteering:
+      - steering/live-ops-resilience.md
+    additionalTags:
+      - gaming
+tags:
+  - gaming
+  - entertainment
+  - live-ops

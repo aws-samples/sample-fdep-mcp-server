@@ -1,0 +1,14 @@
+# Disallowed customer-specific names that would break program portability.
+#
+# Programs must never hard-code real customer names. Use generic placeholders
+# (e.g. "the customer", "<customer>") instead. Entries listed here are
+# rejected by `npm run scan:portability` and by `FDE program validate` with
+# case-insensitive word-boundary matching.
+#
+# To add a term:
+#   disallowed:
+#     - Acme
+#     - Contoso
+#     - Northwind
+
+disallowed: []

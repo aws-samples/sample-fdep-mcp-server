@@ -1,0 +1,52 @@
+# Responsible AI Review: {{workload.name}}
+
+**Date:** {{review.date}}
+**Reviewer:** {{review.reviewer}}
+**Workload owner:** {{workload.owner}}
+**Compliance representative:** {{workload.compliance}}
+
+## Workload in scope
+
+{{workload.description}}
+
+**System type:** {{workload.systemType}}
+**Deployment status:** {{workload.deploymentStatus}}
+**User population:** {{workload.users}}
+
+## Risk summary
+
+| Dimension | Rating | Top finding |
+|---|---|---|
+| Fairness | {{findings.fairness.rating}} | {{findings.fairness.summary}} |
+| Privacy | {{findings.privacy.rating}} | {{findings.privacy.summary}} |
+| Transparency | {{findings.transparency.rating}} | {{findings.transparency.summary}} |
+| Safety | {{findings.safety.rating}} | {{findings.safety.summary}} |
+| Accountability | {{findings.accountability.rating}} | {{findings.accountability.summary}} |
+
+## Findings detail
+
+{{#each findings}}
+### {{this.dimension}}: {{this.rating}}
+
+**Evidence:**
+{{this.evidence}}
+
+**Gaps:**
+{{this.gaps}}
+
+**Mitigation:**
+- Owner: {{this.mitigation.owner}}
+- Deadline: {{this.mitigation.deadline}}
+- Action: {{this.mitigation.action}}
+
+{{/each}}
+
+## Regulatory mapping
+
+{{regulatory.framework}}: {{regulatory.notes}}
+
+## Sign-off
+
+- [ ] Workload owner: {{workload.owner}}
+- [ ] Compliance: {{workload.compliance}}
+- [ ] Date: {{review.signoffDate}}

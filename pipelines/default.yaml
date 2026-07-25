@@ -1,0 +1,19 @@
+# Default FDE pipeline.
+#
+# Four-stage engagement flow:
+#   intent    → understand what the customer wants
+#   assess    → measure where they are today (AIM tier, etc.)
+#   transform → execute the enablement work
+#   ai-native → validate exit criteria, close the engagement
+
+stages:
+  - intent
+  - assess
+  - transform
+  - ai-native
+
+entry:
+  intent: "always"
+  assess: "intake complete"
+  transform: "assessment artifact exists"
+  ai-native: "exit criteria met"

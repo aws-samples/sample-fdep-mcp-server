@@ -1,0 +1,47 @@
+id: ai-operations
+name: AI Operations (AI Ops)
+version: 1.0.0
+summary: Produce an AI Business Operating Manual - a living governance document that defines how all AI systems operate safely across the enterprise, with full context of business impact and dependencies. Based on AWS Prescriptive Guidance for operationalizing AI (https://docs.aws.amazon.com/prescriptive-guidance/latest/strategy-operationalizing-agentic-ai/) and the Gen AI Lifecycle Operational Excellence framework (https://docs.aws.amazon.com/prescriptive-guidance/latest/gen-ai-lifecycle-operational-excellence/).
+owner: fde-partner-program
+
+stages:
+  - transform
+  - ai-native
+
+applicability:
+  - when: "intent.includes('ai-operations')"
+    weight: 95
+  - when: "intake.production.aiSystems >= 3"
+    weight: 70
+  - when: "intake.regulated === true"
+    weight: 60
+
+skills:
+  - skills/produce-operating-manual.md
+  - skills/define-incident-response.md
+  - skills/stand-up-ai-coe.md
+
+steering:
+  - steering/ai-ops-principles.md
+  - steering/operating-manual-shape.md
+
+templates:
+  - templates/operating-manual.md.hbs
+
+playbooks:
+  - playbooks/fde-coe-standup.md
+
+exitCriteria:
+  - id: operating-manual-published
+    description: "An AI operating manual exists with every in-scope system catalogued."
+    check: artifact-exists
+    target: "artifacts/ai-ops/operating-manual-*.md"
+  - id: incident-response-defined
+    description: "Per-system incident-response runbooks exist."
+    check: artifact-exists
+    target: "artifacts/ai-ops/incident-response-*.md"
+
+tags:
+  - operations
+  - governance
+  - enterprise

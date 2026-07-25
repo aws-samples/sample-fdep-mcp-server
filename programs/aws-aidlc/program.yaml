@@ -1,0 +1,95 @@
+id: aws-aidlc
+name: AWS AI-DLC (AI-Driven Development Life Cycle)
+version: 1.0.0
+summary: Integrates AWS Labs' aidlc-workflows methodology as a first-class FDE program. AI-DLC's three phases (Inception → Construction → Operations) provide the lifecycle shape; FDE's existing programs provide the implementation. Owns the engagement's requirements-capture surface when installed.
+owner: fde-partner-program
+
+stages:
+  - intent
+  - transform
+  - ai-native
+
+# Activation logic adapted for intention-driven model.
+#   1. Explicit — FDE sets 'aidlc' goal. Weight 99: committed to AI-DLC.
+#   2. Implicit — any build engagement with a workload block is a candidate.
+#      Weight 70 means the program shows up as a recommendation.
+#   3. Prototyping goal also triggers at moderate weight.
+applicability:
+  - when: "intent.includes('aidlc')"
+    weight: 99
+  - when: "intent.includes('build')"
+    weight: 70
+  - when: "intent.includes('prototyping')"
+    weight: 70
+
+skills:
+  - skills/install-aidlc.md
+  - skills/start-inception.md
+  - skills/advance-construction.md
+  - skills/complete-operations.md
+  - skills/sync-to-fde-intake.md
+
+steering:
+  - steering/aidlc-program-overview.md
+  - steering/aidlc-fde-bridge.md
+  - steering/no-simulated-data.md
+  - steering/fde-integration-points.md
+
+templates: []
+
+playbooks: []
+
+references:
+  - references/aidlc-three-phase-overview.md
+  - references/aidlc-installation-guide.md
+  - references/aidlc-extensions-overview.md
+  - references/aidlc-fde-mapping.md
+
+exitCriteria:
+  # Stage: intent — installation completed before any other artifact.
+  - id: aidlc-installed
+    description: "AWS Labs AI-DLC rules are installed in the engagement workspace."
+    check: state-matches
+    target: "aidlcInstalled"
+
+  # Stage: intent — Inception artifacts exist. In the intention-driven model,
+  # this replaces the old discovery dependency. Inception captures requirements
+  # and patches the intention via fde_patch_intention.
+  - id: aidlc-inception-complete
+    description: "AI-DLC Inception artifacts exist under aidlc-docs/inception/."
+    check: artifact-exists
+    target: "aidlc-docs/inception/requirements/**"
+
+  # Stage: intent — Intention reflects inception outputs. The sync skill
+  # patches the intention with AIM scores and workload context captured
+  # during inception, enabling downstream program activation.
+  - id: aidlc-intention-synced
+    description: "AI-DLC inception fields have been synced to the engagement intention (aim scores and workload populated)."
+    check: state-matches
+    target: "aim.overall"
+
+  # Stage: transform — Construction artifacts exist.
+  - id: aidlc-construction-complete
+    description: "AI-DLC Construction artifacts exist under aidlc-docs/construction/."
+    check: artifact-exists
+    target: "aidlc-docs/construction/**"
+
+  # Stage: ai-native — Operations phase completed by routing FDE operations
+  # programs into AI-DLC's Operations placeholder.
+  - id: aidlc-operations-complete
+    description: "AI-DLC Operations phase is complete via routed FDE operations programs (resilience review, AI BOM, deployment, observability, production-readiness graduation)."
+    check: artifact-exists
+    target: "aidlc-docs/operations/operations-plan.md"
+
+# No dependsOn — the old discovery dependency is removed. The intention file
+# provides structured requirements upfront; AI-DLC inception enriches them.
+dependsOn: []
+
+tags:
+  - aws-aidlc
+  - aidlc-workflows
+  - methodology
+  - inception
+  - construction
+  - operations
+  - lifecycle

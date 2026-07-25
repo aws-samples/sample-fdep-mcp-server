@@ -1,0 +1,301 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aine.dev/schemas/program.schema.json",
+  "title": "ProgramManifest",
+  "description": "Manifest for an FDE enablement program (program.yaml). See design.md §Data Models — Model 1.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "name",
+    "version",
+    "summary",
+    "owner",
+    "stages",
+    "applicability",
+    "skills",
+    "steering",
+    "templates",
+    "playbooks",
+    "exitCriteria"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Kebab-case, globally unique program identifier (e.g. 'aim', 'responsible-ai').",
+      "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable program name (e.g. 'AI Maturity Model').",
+      "minLength": 1
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version per semver.org 2.0.0.",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+    },
+    "summary": {
+      "type": "string",
+      "description": "One-line description of the program.",
+      "minLength": 1
+    },
+    "owner": {
+      "type": "string",
+      "description": "Team or alias that owns this program.",
+      "minLength": 1
+    },
+    "stages": {
+      "type": "array",
+      "description": "Pipeline stages this program participates in. At least one stage is required.",
+      "items": {
+        "$ref": "#/$defs/pipelineStage"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "applicability": {
+      "type": "array",
+      "description": "Applicability rules evaluated by the planner to score this program for a customer.",
+      "items": {
+        "$ref": "#/$defs/applicabilityRule"
+      }
+    },
+    "skills": {
+      "type": "array",
+      "description": "Relative paths (from the program directory) to skill files.",
+      "items": {
+        "$ref": "#/$defs/relativePath"
+      }
+    },
+    "steering": {
+      "type": "array",
+      "description": "Relative paths to steering files.",
+      "items": {
+        "$ref": "#/$defs/relativePath"
+      }
+    },
+    "templates": {
+      "type": "array",
+      "description": "Relative paths to template files (e.g. Handlebars).",
+      "items": {
+        "$ref": "#/$defs/relativePath"
+      }
+    },
+    "playbooks": {
+      "type": "array",
+      "description": "Relative paths to human-only FDE playbooks (not rendered into platforms).",
+      "items": {
+        "$ref": "#/$defs/relativePath"
+      }
+    },
+    "references": {
+      "type": "array",
+      "description": "Relative paths to reference material (architecture docs, deep-dives) rendered into the engagement for agent consumption.",
+      "items": {
+        "$ref": "#/$defs/relativePath"
+      }
+    },
+    "exitCriteria": {
+      "type": "array",
+      "description": "Checkable predicates that close stages this program participates in.",
+      "items": {
+        "$ref": "#/$defs/exitCriterion"
+      }
+    },
+    "dependsOn": {
+      "type": "array",
+      "description": "Other program ids this program depends on. Resolved by the planner.",
+      "items": {
+        "$ref": "#/$defs/programId"
+      },
+      "uniqueItems": true
+    },
+    "tags": {
+      "type": "array",
+      "description": "Free-form tags for search and filtering.",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    }
+  },
+  "$defs": {
+    "programId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "pipelineStage": {
+      "type": "string",
+      "enum": [
+        "intent",
+        "assess",
+        "transform",
+        "ai-native"
+      ]
+    },
+    "relativePath": {
+      "type": "string",
+      "description": "Path relative to the program directory. Must not be absolute and must not traverse upward.",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!.*\\.\\.(?:/|$))[^\\\\]+$"
+    },
+    "applicabilityRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "when",
+        "weight"
+      ],
+      "properties": {
+        "when": {
+          "type": "string",
+          "description": "FDE applicability expression (restricted DSL) evaluated against intake + state.",
+          "minLength": 1
+        },
+        "weight": {
+          "type": "integer",
+          "description": "Planner ranking weight. Higher values score higher when this rule matches.",
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
+    },
+    "activationBlock": {
+      "type": "object",
+      "description": "Activation predicate block shared by programs and lenses. Evaluated against an intention-derived context.",
+      "additionalProperties": false,
+      "required": [
+        "rules"
+      ],
+      "properties": {
+        "combine": {
+          "type": "string",
+          "description": "Boolean combiner for the rules. 'any' (default) returns the highest matching rule weight; 'all' requires every rule to match and sums their weights.",
+          "enum": [
+            "any",
+            "all"
+          ]
+        },
+        "rules": {
+          "type": "array",
+          "description": "Activation rules. At least one rule is required.",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/activationRule"
+          }
+        }
+      }
+    },
+    "activationRule": {
+      "type": "object",
+      "description": "A single activation rule: a DSL expression, a weight, and an optional human-readable reason surfaced in the activation trace.",
+      "additionalProperties": false,
+      "required": [
+        "when",
+        "weight"
+      ],
+      "properties": {
+        "when": {
+          "type": "string",
+          "description": "FDE activation DSL expression evaluated against the intention-derived context.",
+          "minLength": 1
+        },
+        "weight": {
+          "type": "integer",
+          "description": "Activation weight contributed by this rule when it matches.",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "reason": {
+          "type": "string",
+          "description": "Human-readable reason surfaced in the activation trace.",
+          "minLength": 1
+        }
+      }
+    },
+    "exitCriterion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "description",
+        "check"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Stable identifier for this exit criterion within the program.",
+          "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "description": {
+          "type": "string",
+          "description": "Human-readable description of the criterion.",
+          "minLength": 1
+        },
+        "check": {
+          "type": "string",
+          "enum": [
+            "manual",
+            "artifact-exists",
+            "state-matches"
+          ]
+        },
+        "target": {
+          "type": "string",
+          "description": "Path (for artifact-exists) or state predicate (for state-matches). Optional for manual checks.",
+          "minLength": 1
+        }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "check": {
+              "const": "manual"
+            }
+          },
+          "required": [
+            "check"
+          ]
+        },
+        {
+          "properties": {
+            "check": {
+              "const": "artifact-exists"
+            },
+            "target": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "check",
+            "target"
+          ]
+        },
+        {
+          "properties": {
+            "check": {
+              "const": "state-matches"
+            },
+            "target": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "check",
+            "target"
+          ]
+        }
+      ]
+    }
+  }
+}
