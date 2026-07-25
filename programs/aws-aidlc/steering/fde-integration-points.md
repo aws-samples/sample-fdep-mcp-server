@@ -56,7 +56,7 @@ When executing AI-DLC stages that produce design or code artifacts, the agent MU
 | AI-DLC Stage | Phase | Consult References? |
 |---|---|---|
 | Workspace Detection | Inception | No |
-| Requirements Analysis | Inception | No |
+| Requirements Analysis | Inception | YES — when technical stack or service selection questions are asked |
 | User Stories | Inception | No |
 | Workflow Planning | Inception | No |
 | **Application Design** | **Inception** | **YES — architecture decisions** |
@@ -76,6 +76,7 @@ When executing AI-DLC stages that produce design or code artifacts, the agent MU
 
 ## When NOT to call FDE
 
-- During pure elicitation stages (Requirements Analysis, User Stories — conversational, no patterns needed)
+- During pure elicitation stages (User Stories — conversational, no patterns needed)
+- During Requirements Analysis ONLY when questions are purely business/scope (not technical stack selection)
 - During Workspace Detection (just file scanning)
 - When reading AI-DLC rule-details files (local, no FDE call needed)
