@@ -54,10 +54,13 @@ Get AWS Labs' [aidlc-workflows](https://github.com/awslabs/aidlc-workflows) inst
 
 4. Place the retrieved content into the platform-specific paths per `references/aidlc-installation-guide.md`. The skill **delegates** the actual placement to the FDE if the agent does not have shell-execution capability — present the exact commands and wait for confirmation that they ran.
 5. Verify installation by re-running the detection logic in step 2 of pre-flight. If the detection paths are now satisfied, proceed; if not, surface the failure and stop.
-6. Update `state/current.yaml`:
-   - Set `aidlcInstalled: true`
-   - Set `aidlcVersion: <captured from VERSION file>`
-   - Set `aidlcInstalledAt: <iso timestamp>`
+6. **MERGE** into `state/current.yaml` (do NOT overwrite the file — preserve all existing fields):
+   - Add field `aidlcInstalled: true`
+   - Add field `aidlcVersion: <captured from VERSION file>`
+   - Add field `aidlcInstalledAt: <iso timestamp>`
+   - Update field `updatedAt: <same iso timestamp as aidlcInstalledAt>`
+
+   ⚠️ **Critical:** The existing fields (`customer`, `intent`, `intake`, `aimTier`, `currentStage`, `decisions`, `startedAt`) MUST remain untouched. Read the file first, add the three new fields, refresh `updatedAt`, then write it back. Never rewrite the entire file from scratch.
 7. Append a decision entry to `state/history.jsonl`:
    ```json
    {"ts":"<iso>","actor":"fde","kind":"aidlc-installed","detail":{"version":"<v>","platform":"<p>","evidence":{"source":"chat","userInput":"<verbatim confirmation string>"}}}

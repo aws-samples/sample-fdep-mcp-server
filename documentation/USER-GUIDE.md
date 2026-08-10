@@ -137,6 +137,57 @@ After rendering, your workspace has steering files that guide the agent and skil
 - `/build-app` — start building an AI app with tested patterns
 - `/run-rai-review` — conduct a Responsible AI review
 
+#### Example A: Healthcare AI app with AI-DLC (build + aidlc + regulated)
+
+After creating the engagement, your workspace has steering and skills for ai-native-app-builder, aws-aidlc, and responsible-ai. Here's a typical session:
+
+**Step 1 — Install AI-DLC rules:**
+> Prompt: *"Install AI-DLC in this workspace"*
+
+The agent runs `/aidlc-install`, copies ~30KB of workflow rules into `.kiro/steering/aws-aidlc-rules/`, and records the installation in state. You confirm with "yes" when prompted.
+
+**Step 2 — Run Inception:**
+> Prompt: *"Using AI-DLC, capture the requirements for our clinical decision support system"*
+
+AI-DLC's Inception phase takes over. It asks structured questions about your users, workflows, data classification, and success criteria. Expect 30–60 minutes of Q&A. Artifacts land in `aidlc-docs/inception/requirements/`.
+
+**Step 3 — Sync to FDE state:**
+> Prompt: *"Sync AI-DLC inception results to FDE intake"*
+
+The agent runs `/aidlc-sync`, mirroring verbatim requirements into `state/current.yaml` so other FDE programs (AIM, Responsible AI) can evaluate them.
+
+**Step 4 — Build with tested patterns:**
+> Prompt: *"Build the app following the reference architecture"*
+
+The agent consults `.fde-manifest.json`, reads the appropriate layer references (Layer 4 for AI workflow, Layer 5 for frontend), and generates code using AWS-tested patterns rather than from memory.
+
+**Expected outcome:** A working AI-native application with requirements traced back to AI-DLC's audit log, architecture decisions recorded in `state/history.jsonl`, and responsible-AI review prompts surfaced at the right moments.
+
+---
+
+#### Example B: Quick AI maturity assessment (gen-ai-rollout)
+
+For org-level advisory without building an app:
+
+**Step 1 — Create engagement:**
+> Prompt: *"Create an engagement for megacorp, financial-services, goal is gen-ai-rollout, AIM tier 1"*
+
+This activates: aim, agentpath, ai-operations. No build program, no AI-DLC.
+
+**Step 2 — Run AIM assessment:**
+> Prompt: *"Run the AIM assessment"*
+
+The agent walks through maturity questions across Business, Security, and Governance perspectives, producing scores and a gap analysis.
+
+**Step 3 — Get recommendations:**
+> Prompt: *"What should megacorp focus on first?"*
+
+The agent uses the AIM scores and agentpath analysis to produce prioritized recommendations for moving from Tier 1 → Tier 2.
+
+**Expected outcome:** A maturity scorecard, gap analysis, and prioritized roadmap — no code produced, but the engagement is recorded and resumable for when they're ready to build.
+
+---
+
 ### 4. Resume later
 
 If you restart your agent session, it can resume:

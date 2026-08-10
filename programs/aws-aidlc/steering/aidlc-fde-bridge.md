@@ -105,6 +105,7 @@ When AWS Labs eventually publishes their own Operations rules, the routing in th
 2. **Decision kinds that imply user acknowledgement** must include an `evidence` field per `discovery-first-gate.md` rule 3. When AI-DLC is in use, the `evidence` field cites the AI-DLC audit log entry: `{"source":"aidlc-audit","timestamp":"<iso>"}`.
 3. **`state.intake.*` mirrors AI-DLC requirements** but does not duplicate them. The mirror is for downstream FDE programs that read intake; the source remains `aidlc-docs/inception/requirements/`.
 4. **Stage transitions in FDE happen automatically when AI-DLC artifacts land.** The discovery program's exit criterion fires when `aidlc-docs/inception/requirements/**` exists plus `state.intake.discoveryComplete=true`. No separate manual transition.
+5. **`state/current.yaml` is merge-only.** When any skill updates the state file, it MUST use a read-modify-write pattern: read the existing file, add or update only the specified fields, write it back. Never rewrite the entire file from scratch. Existing fields (`customer`, `intent`, `intake`, `aimTier`, `currentStage`, `decisions`, `startedAt`, `updatedAt`) must never be removed during an update. This is especially important during `/aidlc-install` (which adds `aidlcInstalled`, `aidlcVersion`, `aidlcInstalledAt`) and `/aidlc-sync` (which updates `intake.*` fields).
 
 ## What happens if AI-DLC is in the active program set but not installed
 
