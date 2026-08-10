@@ -100,8 +100,8 @@ All subsequent rule detail file references (e.g., `common/process-overview.md`, 
 2. Load all steps from `inception/workspace-detection.md`
 3. Execute workspace detection:
    - Check for existing aidlc-state.md (resume if found)
-   - Scan workspace for existing code
-   - Determine if brownfield or greenfield
+   - Scan workspace for existing code **excluding FDE Delivery Kit infrastructure** (`.kiro/`, `state/`, `aidlc-docs/`, `.fde-manifest.json`, MCP config files)
+   - Determine if brownfield or greenfield based on presence of customer application code only
    - Check for existing reverse engineering artifacts
 4. Determine next phase: Reverse Engineering (if brownfield and no artifacts) OR Requirements Analysis
 5. **MANDATORY**: Log findings in audit.md
