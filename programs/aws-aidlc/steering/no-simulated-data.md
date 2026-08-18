@@ -36,8 +36,8 @@ When generating code for any unit marked as "Code Generation" in the AI-DLC work
 
 Read the requirement's Detail column literally:
 - "Multiple photos per claim (min 1, max 10)" = actual file upload to actual storage
-- "Customer choice: AWS gift voucher OR Etihad Guest loyalty miles" = actual selection UI + actual persistence of choice
-- "Mock/stub interface to existing Etihad PIR system" = a mock is the correct implementation
+- "Customer choice: gift voucher OR loyalty points" = actual selection UI + actual persistence of choice
+- "Mock/stub interface to an existing external system of record" = a mock is the correct implementation
 
 ## Enforcement
 
@@ -52,8 +52,12 @@ Read the requirement's Detail column literally:
 - verify-e2e-flow hook (post-task data flow trace)
 - requirements-traceability hook (FR cross-reference)
 
-## Origin
+## Rationale
 
-Created: 2026-06-11  
-Engagement: etihad-baggage  
-Failure: Photo upload simulated (fake S3 keys generated client-side), breaking Assessment Service which needed real images in S3 to call Bedrock. Compensation amount was never calculated because assessment failed silently. Agent UI showed no images because presigned URLs pointed to non-existent keys.
+This rule exists because simulating data instead of building the real flow
+breaks downstream services silently. For example, generating fake storage keys
+client-side rather than performing a real upload starves a downstream assessment
+service that needs the real object to process — the pipeline then fails quietly,
+dependent results are never produced, and the UI shows nothing because the
+references point to objects that do not exist. Build the real flow at every
+stage; the app level determines *what* to build, not *whether* to build it.

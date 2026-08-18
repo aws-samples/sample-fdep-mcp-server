@@ -78,9 +78,10 @@ During Infrastructure Design, when defining CloudFront response headers:
 2. If yes, include the S3 bucket's domain in `img-src`
 3. For cross-region setups, include both regions: `https://*.s3.<region1>.amazonaws.com https://*.s3.<region2>.amazonaws.com`
 
-## Origin
+## Rationale
 
-Created: 2026-06-11
-Engagement: etihad-baggage
-Failure: Customer portal and agent dashboard showed broken image icons for claim photos. Presigned GET URLs were valid (curl returned 200 with image data). Root cause: CloudFront CSP header `img-src 'self' data: blob:` didn't include S3 origin. Browser blocked the image load silently.
-Fix: Added `https://*.s3.eu-central-1.amazonaws.com` to `img-src` directive.
+This rule exists because a CloudFront CSP `img-src 'self' data: blob:` directive
+that omits the S3 origin silently blocks images served from S3 presigned URLs —
+the presigned GET URL is valid (curl returns 200) but the browser refuses the
+load with only a CSP-violation entry and a broken-image icon. Adding the S3
+origin (e.g. `https://*.s3.<region>.amazonaws.com`) to `img-src` fixes it.
