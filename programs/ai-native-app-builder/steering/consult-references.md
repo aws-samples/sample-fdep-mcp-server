@@ -55,8 +55,6 @@ When generating code during any AI-DLC Construction Code Generation stage:
 - The agent must cite which reference file it consulted when generating code for each layer
 - If no reference exists for the pattern needed, state that explicitly and fall back to documentation search
 
-## Origin
+## Rationale
 
-Created: 2026-06-11
-Engagement: etihad-baggage
-Failure: Amplify v6 `Amplify.configure()` format was wrong (used patterns that triggered Cognito 400 errors). The correct pattern was already documented in layer-5-ui-implementation.md but wasn't consulted during code generation.
+This rule exists because agents generate framework code from training data that drifts out of date. A representative failure: an Amplify v6 `Amplify.configure()` call was generated in an outdated format that triggered Cognito 400 errors, even though the correct pattern was already documented in `layer-5-ui-implementation.md` — it simply wasn't consulted before code generation. Consulting the version-specific reference first prevents this class of error.
