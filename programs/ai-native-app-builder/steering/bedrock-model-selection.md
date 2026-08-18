@@ -10,32 +10,59 @@ priority: 92
 
 ## Context
 
-Created after three consecutive deployment failures due to Bedrock model selection issues:
-1. Claude 3 Sonnet (original model) — reached end-of-life, rejected with ResourceNotFoundException
-2. Claude Sonnet 4 (direct model ID) — requires inference profile, rejected with ValidationException
-3. Claude Sonnet 4 (EU inference profile) — marked as "Legacy" due to 30-day inactivity, rejected with ResourceNotFoundException
+Bedrock model IDs are a moving target. Models reach end-of-life, become "Legacy"
+after inactivity, and require inference profiles for newer versions. Any specific
+model ID written into a rule or example WILL go stale — dated identifiers such as
+`...-20250514-...` are deprecated within months. **This rule therefore never
+asserts a current model ID. It delegates model resolution to the live source of
+truth via the AWS MCP server.**
 
 ## Rules
+
+### 0. Resolve the current model at build time — never hardcode from memory
+
+Do NOT write a model ID from training data or from this document. Resolve the
+current, active model for the target region at generation time using the
+**AWS MCP server** (the required companion server; see the Quick Start).
+
+1. **Confirm the recommended current model and its lifecycle status** by reading
+   the authoritative AWS documentation through the AWS MCP server:
+   - Model lifecycle (ACTIVE / LEGACY / EOL): <https://docs.aws.amazon.com/bedrock/latest/userguide/model-lifecycle.html>
+   - Inference-profile support and per-model IDs: <https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html>
+2. **Verify live availability in the target region** by calling the AWS API
+   through the AWS MCP server (equivalent to `bedrock list-inference-profiles` /
+   `bedrock list-foundation-models`). Use the ID returned by the live call.
+3. Use the resolved inference-profile ID in the generated code. If you cannot
+   reach the AWS MCP server, STOP and tell the FDE — do not fall back to a
+   remembered ID.
+
+> The examples below use `<current-inference-profile-id>` as a placeholder.
+> Substitute the value resolved in steps 1–2. Never commit a hardcoded dated
+> model ID as if it were authoritative.
 
 ### 1. Always use inference profiles, never direct model IDs
 
 ```typescript
-// WRONG — will fail with ValidationException for newer models
-const MODEL_ID = 'anthropic.claude-sonnet-4-20250514-v1:0';
+// WRONG — a bare dated model ID; fails with ValidationException for newer
+// models and goes stale as versions are deprecated.
+const MODEL_ID = 'anthropic.claude-<version>-<date>-v1:0';
 
-// CORRECT — use the regional inference profile
-const MODEL_ID = 'eu.anthropic.claude-sonnet-4-5-20250929-v1:0'; // eu-central-1
+// CORRECT — a regional inference profile ID resolved at build time via the
+// AWS MCP server (see Rule 0). Example shape only:
+const MODEL_ID = '<region>.<current-inference-profile-id>';
 ```
 
 ### 2. Verify model availability BEFORE writing code
 
-During Infrastructure Design, run:
+During Infrastructure Design, resolve availability through the AWS MCP server
+(preferred), or with the AWS CLI as a fallback:
 ```bash
 aws bedrock list-inference-profiles --region <target-region> \
   --query "inferenceProfileSummaries[?contains(inferenceProfileName,'Claude')].{Name:inferenceProfileName,Id:inferenceProfileId}"
 ```
 
-Use the inference profile ID from the output, not the model ID from documentation.
+Use the inference profile ID from the live output — never a model ID copied from
+documentation or memory.
 
 ### 3. IAM policy must use wildcard for Bedrock at PoC level
 
@@ -76,9 +103,9 @@ Which region?
 └── me-south-1 → Limited availability, likely need cross-region
 
 Which model for vision/multimodal?
-├── Available + Active → eu.anthropic.claude-sonnet-4-5-* (latest)
-├── If Legacy error → Try next latest version
-└── If no EU profile → Fall back to us.* profiles (cross-region call)
+├── Resolve the latest ACTIVE Claude model via the AWS MCP server (Rule 0)
+├── If Legacy/EOL error → resolve the next-latest ACTIVE version live
+└── If no regional profile → fall back to us.* profiles (cross-region call)
 ```
 
 ### 6. Document the model in requirements AND infrastructure design
@@ -96,9 +123,11 @@ If the model changes during deployment troubleshooting, update ALL THREE locatio
 - During Build and Test, the first test should be an actual Bedrock invocation (not mocked)
 - If model invocation fails, log the error clearly and update the model ID — do not retry the same failing model
 
-## Origin
+## Rationale
 
-Created: 2026-06-11
-Engagement: etihad-baggage
-Region: eu-central-1
-Failures: 3 consecutive model selection errors requiring 3 CDK redeploys to resolve. Total time wasted: ~30 minutes of deploy cycles + debugging.
+This rule exists because Bedrock model selection is a recurring source of deploy
+failures: a model reaches end-of-life (ResourceNotFoundException), a newer model
+requires an inference profile rather than a direct ID (ValidationException), or a
+model is marked Legacy after 30 days of inactivity. Each forces a redeploy cycle.
+Resolving the current model live via the AWS MCP server at build time — rather
+than hardcoding a dated ID — prevents all three failure classes.

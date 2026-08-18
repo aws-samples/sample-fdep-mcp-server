@@ -103,10 +103,12 @@ If the file doesn't appear after a successful PUT (200 response), the signature 
 - During Build and Test: include an actual upload + verify test (not mocked)
 - Never include `ContentType` in presigned PUT URLs for browser uploads
 
-## Origin
+## Rationale
 
-Created: 2026-06-11
-Engagement: etihad-baggage
-Failures:
-1. Agent photo display used PutObjectCommand instead of GetObjectCommand — photos never displayed
-2. ContentType in presigned PUT URL caused browser uploads to silently fail — photos never landed in S3, assessment service got "key does not exist"
+This rule exists because two recurring presigned-URL mistakes cause silent
+failures: (1) using `PutObjectCommand` to generate a URL intended for display
+(should be `GetObjectCommand`), so images never render; and (2) signing
+`ContentType` into a presigned PUT URL, so a browser `fetch` that sends a
+slightly different header fails the signature check and the object never lands
+in S3. Matching the operation and omitting `ContentType` for browser uploads
+avoids both.

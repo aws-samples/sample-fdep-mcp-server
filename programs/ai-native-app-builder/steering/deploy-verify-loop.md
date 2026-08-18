@@ -86,8 +86,10 @@ If the smoke test reveals failures:
 - If any step fails, the deployment is NOT complete — fix and redeploy
 - Log all deployment iterations in the audit trail (for retrospective)
 
-## Origin
+## Rationale
 
-Created: 2026-06-11
-Engagement: etihad-baggage
-Failures: 5 deploy cycles to get working pipeline: (1) old model, (2) wrong model format, (3) legacy model, (4) IAM denied, (5) success. Each required full CDK deploy cycle (~60-80s). Total wasted time: ~10 minutes of deploys + debugging that could have been caught with a pre-deploy model check.
+This rule exists because end-to-end pipeline issues (deprecated model, wrong
+model format, legacy model, over-restrictive IAM) are typically discovered only
+after a full deploy + manual test + log inspection — each iteration costing a
+CDK deploy cycle. A pre-deploy connectivity check plus an immediate post-deploy
+smoke test catches these upfront instead of across several redeploys.

@@ -97,8 +97,10 @@ const pollForResult = async (claimId: string) => {
 | Easier to debug | Sync timeout errors are HARDER to debug (no response body). Async has full CloudWatch logs. |
 | Faster to build | 30 minutes more setup. Saves hours of "why does the demo timeout?" debugging. |
 
-## Origin
+## Rationale
 
-Created: 2026-06-11
-Engagement: etihad-baggage
-Failure: Synchronous Lambda chain exceeded API Gateway 30s timeout. Assessment (3.3s) + cold starts + DynamoDB writes + orchestration overhead = timeout. Pipeline worked correctly but customer got a blank error response. Required manual refresh to see result. Poor demo experience.
+This rule exists because a synchronous Lambda chain that calls an AI model can
+exceed API Gateway's ~29s timeout once cold starts, data writes, and
+orchestration overhead are added — even when the pipeline itself works. The
+result is a blank error response and a broken demo experience. Async-by-default
+for AI pipelines (202 Accepted + polling) avoids the timeout entirely.

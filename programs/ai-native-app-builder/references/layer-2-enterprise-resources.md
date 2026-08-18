@@ -38,7 +38,10 @@ kb = bedrock.CfnKnowledgeBase(self, "AppKB",
     knowledge_base_configuration=bedrock.CfnKnowledgeBase.KnowledgeBaseConfigurationProperty(
         type="VECTOR",
         vector_knowledge_base_configuration=bedrock.CfnKnowledgeBase.VectorKnowledgeBaseConfigurationProperty(
-            embedding_model_arn=f"arn:aws:bedrock:{region}::foundation-model/amazon.titan-embed-text-v2:0"
+            # Resolve the current embedding model live via the AWS MCP server
+            # (see bedrock-model-selection.md). Match embedding dimensions to
+            # the vector store index configuration.
+            embedding_model_arn=f"arn:aws:bedrock:{region}::foundation-model/<current-embedding-model-id>"
         )
     ),
     storage_configuration=bedrock.CfnKnowledgeBase.StorageConfigurationProperty(

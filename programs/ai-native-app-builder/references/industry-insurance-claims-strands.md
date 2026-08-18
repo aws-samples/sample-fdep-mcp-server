@@ -35,9 +35,10 @@ from tools.policy import lookup_policy
 
 app = BedrockAgentCoreApp()
 
-# Configure the model
+# Configure the model. Resolve <current-inference-profile-id> live via the
+# AWS MCP server — see bedrock-model-selection.md. Do not hardcode a dated ID.
 model = BedrockModel(
-    model_id="anthropic.claude-sonnet-4-20250514-v1:0",
+    model_id="<current-inference-profile-id>",
     region_name=os.environ.get("AWS_REGION", "us-west-2")
 )
 
@@ -376,9 +377,11 @@ def assess_damage(image_s3_key: str) -> dict:
         image_obj = s3.get_object(Bucket=DOCUMENTS_BUCKET, Key=image_s3_key)
         image_bytes = image_obj["Body"].read()
         
-        # Use Bedrock vision model for damage assessment
+        # Use a current Bedrock vision model for damage assessment.
+        # Resolve <current-inference-profile-id> live via the AWS MCP server
+        # (see bedrock-model-selection.md) — do not hardcode a dated ID.
         response = bedrock_runtime.converse(
-            modelId="anthropic.claude-sonnet-4-20250514-v1:0",
+            modelId="<current-inference-profile-id>",
             messages=[{
                 "role": "user",
                 "content": [
@@ -604,7 +607,7 @@ The AgentCore execution role needs:
       "Action": [
         "bedrock:InvokeModel"
       ],
-      "Resource": "arn:aws:bedrock:*::foundation-model/anthropic.claude-sonnet-4-20250514-v1:0"
+      "Resource": "arn:aws:bedrock:*:*:inference-profile/<current-inference-profile-id>"
     },
     {
       "Effect": "Allow",

@@ -31,7 +31,7 @@ Before generating any application code or CDK infrastructure, the agent MUST ver
 - AWS services evolve rapidly; training data may reference deprecated APIs
 - CDK constructs change between major versions (v1 vs v2)
 - Amplify v5 to v6 migration changed the entire configuration model
-- Model IDs change (e.g., `anthropic.claude-3-sonnet-20240229-v1:0` vs newer)
+- Bedrock model IDs change and reach end-of-life; resolve them live at build time via the AWS MCP server (see `bedrock-model-selection.md`) rather than hardcoding from memory
 - Using wrong versions causes deployment failures that are hard to debug
 
 ## Anti-patterns
