@@ -10,7 +10,6 @@
   "types": "./core/dist/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "build:demo": "npm --prefix web run build:demo",
     "typecheck": "tsc --noEmit",
     "test": "vitest --run",
     "test:watch": "vitest",
