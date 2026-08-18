@@ -1,4 +1,4 @@
-# Layer 6 — AI Agents
+# Layer 7 — AI Agents
 
 ## Purpose
 

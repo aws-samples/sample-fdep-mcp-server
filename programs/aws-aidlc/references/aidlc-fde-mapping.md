@@ -37,7 +37,7 @@ This reference is the operational mapping between AI-DLC's three-phase methodolo
 | Functional Design | `aidlc-docs/construction/{unit}/functional-design/` | `ai-native-app-builder` references (L2, L3, L4, L5b, L6) |
 | NFR Requirements | `aidlc-docs/construction/{unit}/nfr-requirements/` | `responsible-ai` guardrails inform NFRs |
 | NFR Design | `aidlc-docs/construction/{unit}/nfr-design/` | `resilience` patterns inform NFRs |
-| Infrastructure Design | `aidlc-docs/construction/{unit}/infrastructure-design/` | `ai-native-app-builder` reference `layer-infra-cloud-foundation.md` |
+| Infrastructure Design | `aidlc-docs/construction/{unit}/infrastructure-design/` | `ai-native-app-builder` reference `layer-0-infrastructure.md` |
 | Code Generation | Project source tree | (none ↔ AI-DLC writes code; FDE reads layer mapping references) |
 | Build and Test | `aidlc-docs/construction/build-and-test/` | `ai-native-app-builder` reference `cross-testing-quality.md` |
 

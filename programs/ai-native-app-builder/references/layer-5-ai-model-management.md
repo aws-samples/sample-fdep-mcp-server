@@ -1,4 +1,4 @@
-# Layer 5B — AI Model Management
+# Layer 5 — AI Model Management
 
 ## Purpose
 

@@ -72,7 +72,7 @@ The discovery program's nine-question skill is **not** invoked when AI-DLC is in
 |---|---|
 | **MANDATORY: Read references first** | Before ANY design or code stage, call `fde_get_skill(skillId="build-aws-app", file="references/<layer>.md")`. See `.fde-manifest.json` for the full list. This is NOT optional. |
 | Spec methodology (`cross-spec-driven-methodology.md` reference) | Superseded by AI-DLC. The Kiro three-file spec is not produced. |
-| Functional design | AI-DLC `aidlc-docs/construction/{unit-name}/functional-design/` — consult `layer-4-ai-workflow.md` + `layer-6-ai-agents.md` FIRST |
+| Functional design | AI-DLC `aidlc-docs/construction/{unit-name}/functional-design/` — consult `layer-4-ai-workflow.md` + `layer-7-ai-agents.md` FIRST |
 | NFR design | AI-DLC `aidlc-docs/construction/{unit-name}/nfr-design/` |
 | Infrastructure design | AI-DLC `aidlc-docs/construction/{unit-name}/infrastructure-design/` |
 | Code | AI-DLC project structure (workspace root, not `aidlc-docs/`) |

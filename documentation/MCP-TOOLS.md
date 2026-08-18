@@ -224,7 +224,7 @@ Read a skill definition or a reference file from a program. Reference files cont
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `skillId` | string | The skill identifier (e.g. `"build-aws-app"`) |
-| `file` | string | Optional path to a reference file (e.g. `"references/layer-5-ai-app-creation.md"`) |
+| `file` | string | Optional path to a reference file (e.g. `"references/layer-6-ai-app-creation.md"`) |
 
 **Usage pattern:** Check `.fde-manifest.json` in the workspace for the list of available references and when to read them.
 
@@ -234,7 +234,7 @@ Read a skill definition or a reference file from a program. Reference files cont
   "name": "fde_get_skill",
   "arguments": {
     "skillId": "build-aws-app",
-    "file": "references/layer-5-ai-app-creation.md"
+    "file": "references/layer-6-ai-app-creation.md"
   }
 }
 ```

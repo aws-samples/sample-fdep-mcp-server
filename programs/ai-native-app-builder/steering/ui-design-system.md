@@ -156,4 +156,4 @@ Font stack: `Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif`
 
 ## Reference
 
-See `references/layer-5-ui-design-system.md` for full implementation examples, component code, and links to AWS sample repos with polished UIs.
+See `references/layer-6-ui-design-system.md` for full implementation examples, component code, and links to AWS sample repos with polished UIs.

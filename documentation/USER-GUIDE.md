@@ -235,7 +235,7 @@ Programs ship **reference files** — tested AWS architecture patterns that agen
 {
   "references": [
     {
-      "file": "references/layer-5-ai-app-creation.md",
+      "file": "references/layer-6-ai-app-creation.md",
       "skillId": "build-aws-app",
       "category": "frontend",
       "readBefore": "writing UI/React code"

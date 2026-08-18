@@ -54,17 +54,17 @@ references:
   - references/cross-resilience-operations.md
   - references/cross-spec-driven-methodology.md
   - references/cross-testing-quality.md
+  - references/layer-0-infrastructure.md
   - references/layer-1-enterprise-integrations.md
   - references/layer-2-enterprise-resources.md
   - references/layer-3-ai-data-ontology.md
   - references/layer-4-ai-workflow.md
-  - references/layer-5-ai-app-creation.md
-  - references/layer-5-ui-implementation.md
-  - references/layer-5-ui-design-system.md
-  - references/layer-5b-ai-model-management.md
-  - references/layer-6-ai-agents.md
-  - references/layer-7-developer-experience.md
-  - references/layer-infra-cloud-foundation.md
+  - references/layer-5-ai-model-management.md
+  - references/layer-6-ai-app-creation.md
+  - references/layer-6-ui-design-system.md
+  - references/layer-6-ui-implementation.md
+  - references/layer-7-ai-agents.md
+  - references/layer-8-developer-experience.md
   # Industry deep-dive: Insurance claims processing
   - references/industry-insurance-claims-overview.md
   - references/industry-insurance-claims-architecture.md
