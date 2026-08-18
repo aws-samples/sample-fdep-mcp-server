@@ -1,4 +1,4 @@
-# Layer 7 — Developer Experience (AI-DLC)
+# Layer 8 — Developer Experience (AI-DLC)
 
 ## Purpose
 

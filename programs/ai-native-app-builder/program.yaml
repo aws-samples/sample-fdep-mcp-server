@@ -40,10 +40,12 @@ templates: []
 
 playbooks: []
 
-# Reference material — 26 files covering the AI Native multi-layer architecture (18)
-# plus deep-dive content for the Insurance vertical (4) and AgentCore deployment
-# (4). These render into the engagement so the agent can navigate to the right
-# detail when running /build-app, /scaffold-app, or deploying with agentcore.
+# Reference material — 27 files: the AI Native multi-layer architecture
+# (11 layer references + 8 cross-cutting references) plus deep-dive content for
+# the Insurance vertical (4) and AgentCore deployment (4). These render into the
+# engagement so the agent can navigate to the right detail when running
+# /build-app, /scaffold-app, or deploying with agentcore.
+# See documentation/REFERENCES.md for the full catalog.
 references:
   # multi-layer architecture
   - references/cross-deployment-guide.md
@@ -54,17 +56,17 @@ references:
   - references/cross-resilience-operations.md
   - references/cross-spec-driven-methodology.md
   - references/cross-testing-quality.md
+  - references/layer-0-infrastructure.md
   - references/layer-1-enterprise-integrations.md
   - references/layer-2-enterprise-resources.md
   - references/layer-3-ai-data-ontology.md
   - references/layer-4-ai-workflow.md
-  - references/layer-5-ai-app-creation.md
-  - references/layer-5-ui-implementation.md
-  - references/layer-5-ui-design-system.md
-  - references/layer-5b-ai-model-management.md
-  - references/layer-6-ai-agents.md
-  - references/layer-7-developer-experience.md
-  - references/layer-infra-cloud-foundation.md
+  - references/layer-5-ai-model-management.md
+  - references/layer-6-ai-app-creation.md
+  - references/layer-6-ui-design-system.md
+  - references/layer-6-ui-implementation.md
+  - references/layer-7-ai-agents.md
+  - references/layer-8-developer-experience.md
   # Industry deep-dive: Insurance claims processing
   - references/industry-insurance-claims-overview.md
   - references/industry-insurance-claims-architecture.md

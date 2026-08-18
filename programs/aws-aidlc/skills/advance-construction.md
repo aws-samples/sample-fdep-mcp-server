@@ -27,7 +27,7 @@ Activate AI-DLC's Construction phase. AI-DLC's rules drive the per-unit loop (Fu
 
 ## Procedure
 
-1. Tell the FDE: "I will hand off to AI-DLC's Construction phase. AI-DLC walks per-unit Functional Design, NFR Requirements, NFR Design, Infrastructure Design, and Code Generation, with explicit user-confirmation gates between each. FDE's `ai-native-app-builder` 18-layer references and AgentCore deployment guides remain available — AI-DLC's design stages can call them by name (e.g., 'Read ai-native-app-builder/references/layer-6-ai-agents.md before designing the agent'). Expect a multi-day flow with frequent gates."
+1. Tell the FDE: "I will hand off to AI-DLC's Construction phase. AI-DLC walks per-unit Functional Design, NFR Requirements, NFR Design, Infrastructure Design, and Code Generation, with explicit user-confirmation gates between each. FDE's `ai-native-app-builder` 18-layer references and AgentCore deployment guides remain available — AI-DLC's design stages can call them by name (e.g., 'Read ai-native-app-builder/references/layer-7-ai-agents.md before designing the agent'). Expect a multi-day flow with frequent gates."
 2. Construct the kickoff prompt. Suggest:
 
    > "Using AI-DLC, advance to Construction for the units defined in Inception."

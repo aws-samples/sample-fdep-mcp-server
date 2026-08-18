@@ -102,7 +102,7 @@ export interface Skill {
 }
 
 export interface ReferenceFile {
-  /** Relative path within the program's references directory (e.g. "layer-5-ai-app-creation.md"). */
+  /** Relative path within the program's references directory (e.g. "layer-6-ai-app-creation.md"). */
   filename: string;
   /** Full file content. */
   body: string;

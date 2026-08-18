@@ -1,4 +1,4 @@
-# Layer 5 — UI Implementation Guide
+# Layer 6 — UI Implementation Guide
 
 ## Purpose
 

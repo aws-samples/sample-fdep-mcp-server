@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWS App Builder — Reference Architecture</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --panel: #161b22;
+    --panel2: #1c2431;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --accent: #ff9900;
+    --green: #3fb950;
+    --teal: #39c5cf;
+    --purple: #bc8cff;
+    --kiro: #ff9900;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.4;
+    padding: 24px;
+  }
+  header { text-align: center; margin-bottom: 8px; }
+  header h1 { margin: 0; font-size: 28px; }
+  header p { color: var(--muted); margin: 6px 0 0; }
+  .badge {
+    display: inline-block;
+    background: var(--green);
+    color: #04260f;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 14px;
+    font-size: 13px;
+    margin: 12px 0 20px;
+  }
+  .phases {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+  .phase {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+  }
+  .phase h3 { margin: 0 0 8px; font-size: 13px; color: var(--accent); letter-spacing: .3px; }
+  .phase ul { margin: 0; padding-left: 16px; }
+  .phase li { font-size: 12px; color: var(--muted); margin-bottom: 3px; }
+  .layout { display: grid; grid-template-columns: 220px 1fr 240px; gap: 14px; align-items: start; }
+  .rail { display: flex; flex-direction: column; gap: 14px; }
+  .rail-card, .stack-layer {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+  .rail-card h4 { margin: 0 0 8px; font-size: 13px; }
+  .rail-card.gov h4 { color: #f85149; }
+  .rail-card.ops h4 { color: var(--teal); }
+  .rail-card ul { margin: 0; padding-left: 16px; }
+  .rail-card li { font-size: 12px; color: var(--muted); margin-bottom: 2px; }
+  .stack { display: flex; flex-direction: column; gap: 10px; }
+  .stack-layer { position: relative; }
+  .stack-layer .lnum {
+    font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: .5px;
+  }
+  .stack-layer .lname { font-size: 15px; font-weight: 600; margin: 2px 0 3px; }
+  .stack-layer .ldesc { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2px 9px;
+    font-size: 11px;
+    color: var(--text);
+  }
+  .stack-layer.kiro { border-color: var(--kiro); box-shadow: 0 0 0 1px var(--kiro) inset; }
+  .kiro-flag {
+    position: absolute; top: 10px; right: 12px;
+    background: var(--kiro); color: #241a00; font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 10px;
+  }
+  .file { font-family: Consolas, monospace; font-size: 10.5px; color: var(--teal); margin-top: 6px; }
+  .prod-bar {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-top: 16px;
+  }
+  .prod-bar h3 { margin: 0 0 8px; font-size: 13px; color: var(--accent); letter-spacing: .5px; }
+  .legend {
+    display: flex;
+    gap: 22px;
+    justify-content: center;
+    margin-top: 14px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .legend-item { display: inline-flex; align-items: center; gap: 6px; }
+  .swatch { width: 14px; height: 14px; border-radius: 3px; display: inline-block; }
+  .swatch.cap { background: var(--panel2); border: 1px solid var(--green); }
+  .swatch.kiro-sw { background: var(--kiro); }
+  footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 24px; }
+  @media (max-width: 1000px) {
+    .layout { grid-template-columns: 1fr; }
+    .phases { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>AWS App Builder — Reference Architecture</h1>
+  <p>The full multi-layer architecture the AWS App Builder program builds against</p>
+  <div class="badge">KIRO AS DEVELOPER PLATFORM &amp; METHODOLOGY — PRODUCTION READY</div>
+</header>
+
+<section class="phases">
+  <div class="phase">
+    <h3>PHASE 0 — SPEC-DRIVEN</h3>
+    <ul><li>Spec: Requirements</li><li>Spec: Design Docs</li><li>Spec: Task Breakdown</li><li>User alignment &amp; sign-off</li></ul>
+  </div>
+  <div class="phase">
+    <h3>PHASE 1 — FOUNDATION</h3>
+    <ul><li>Provision infra (Layer 0)</li><li>Auth &amp; Identity (Cognito)</li><li>VPC &amp; networking</li><li>Multi-env strategy (SSM)</li><li>Bootstrap workspace</li></ul>
+  </div>
+  <div class="phase">
+    <h3>PHASE 2 — DATA &amp; RESOURCES</h3>
+    <ul><li>Wire integrations (Layer 1)</li><li>Knowledge Bases &amp; APIs (Layer 2)</li><li>Data ontology &amp; embeddings (Layer 3)</li><li>Seed data &amp; test fixtures</li></ul>
+  </div>
+  <div class="phase">
+    <h3>PHASE 3 — INTELLIGENCE</h3>
+    <ul><li>Connect LLM &amp; configure RAG (Layer 5)</li><li>Build AI agents (Layer 7)</li><li>Workflow orchestration (Layer 4)</li><li>Guardrails &amp; prompt mgmt</li><li>Error handling &amp; DLQs</li></ul>
+  </div>
+  <div class="phase">
+    <h3>PHASE 4 — EXPERIENCE &amp; PROD</h3>
+    <ul><li>Build AI Apps (Layer 6)</li><li>Agent evaluation suite</li><li>Observability &amp; monitoring</li><li>CI/CD pipeline &amp; deploy</li><li>Governance &amp; compliance</li></ul>
+  </div>
+</section>
+
+<div class="layout">
+  <!-- LEFT RAIL -->
+  <div class="rail">
+    <div class="rail-card gov">
+      <h4>&#9889; KIRO (Layer 8) — Platform</h4>
+      <ul>
+        <li>Specs &rarr; Requirements / Design / Tasks</li>
+        <li>Steering Files</li>
+        <li>Agent Hooks</li>
+        <li>MCP Servers</li>
+        <li>CI/CD via Hooks</li>
+        <li>Prompt Versioning</li>
+        <li>Deploy &amp; Monitor</li>
+      </ul>
+    </div>
+    <div class="rail-card gov">
+      <h4>&#128274; AI Governance &amp; Security</h4>
+      <ul>
+        <li>Bedrock Guardrails</li>
+        <li>PII Detection &amp; Redaction</li>
+        <li>Human-in-the-Loop Controls</li>
+        <li>Access Controls &amp; Data Boundaries</li>
+        <li>Audit Trails &amp; Traceability</li>
+        <li>Model Eval &amp; Grounding</li>
+        <li>Responsible AI Dashboard</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- CENTER STACK -->
+  <div class="stack">
+    <div class="stack-layer">
+      <div class="lnum">LAYER 9</div>
+      <div class="lname">Marketplace &amp; Ecosystem</div>
+      <div class="ldesc">Agentic offerings, ISV partners, template store</div>
+      <div class="tags"><span class="tag">Agent Marketplace</span><span class="tag">Template Store</span><span class="tag">ISV Ecosystem</span></div>
+      <div class="file">(no reference file yet)</div>
+    </div>
+    <div class="stack-layer kiro">
+      <span class="kiro-flag">KIRO</span>
+      <div class="lnum">LAYER 8 — AI-DLC</div>
+      <div class="lname">Developer Experience Layer</div>
+      <div class="ldesc">Kiro: Specs, Steering, Hooks, MCP</div>
+      <div class="tags"><span class="tag">Requirements (Specs)</span><span class="tag">Designs (Specs)</span><span class="tag">Tasks (Specs)</span><span class="tag">Build (Hooks)</span><span class="tag">Test (Hooks)</span><span class="tag">Deploy</span><span class="tag">Run &amp; Monitor</span><span class="tag">CI/CD Automation</span></div>
+      <div class="file">layer-8-developer-experience.md</div>
+    </div>
+    <div class="stack-layer">
+      <div class="lnum">LAYER 7</div>
+      <div class="lname">AI Agents Layer</div>
+      <div class="ldesc">Multi-agentic autonomous execution</div>
+      <div class="tags"><span class="tag">AI Agent Builder</span><span class="tag">Enterprise Search</span><span class="tag">AI Apps</span><span class="tag">Team of Agents</span><span class="tag">LLM Agnostic</span><span class="tag">Basic Guardrails</span><span class="tag">Multi-turn Chatbot</span><span class="tag">Intent &amp; Routing</span><span class="tag">Voice AI</span><span class="tag">Multi-language</span><span class="tag">Contact Center</span><span class="tag">Strands Agents</span></div>
+      <div class="file">layer-7-ai-agents.md</div>
+    </div>
+    <div class="stack-layer">
+      <div class="lnum">LAYER 6</div>
+      <div class="lname">AI App Creation Layer</div>
+      <div class="ldesc">Human in the loop — build &amp; manage AI apps</div>
+      <div class="tags"><span class="tag">App Builder</span><span class="tag">Blueprints</span><span class="tag">Native Apps</span><span class="tag">AgentCore Fullstack Webapp</span><span class="tag">Drag &amp; Drop Studio</span><span class="tag">OOTB Components</span></div>
+      <div class="file">layer-6-ai-app-creation.md &middot; layer-6-ui-design-system.md &middot; layer-6-ui-implementation.md</div>
+    </div>
+    <div class="stack-layer">
+      <div class="lnum">LAYER 5</div>
+      <div class="lname">AI Model Management</div>
+      <div class="ldesc">Full model lifecycle — inference, prompts, RAG, benchmarking</div>
+      <div class="tags"><span class="tag">Model Serving / Inference</span><span class="tag">Prompt Management</span><span class="tag">RAG Orchestration</span><span class="tag">Embedding Management</span><span class="tag">Model Registry</span><span class="tag">Fine-Tuning</span><span class="tag">Benchmarking</span></div>
+      <div class="file">layer-5-ai-model-management.md</div>
+    </div>
+    <div class="stack-layer">
+      <div class="lnum">LAYER 4</div>
+      <div class="lname">AI Workflow Layer</div>
+      <div class="ldesc">Reusable workflows &amp; automation</div>
+      <div class="tags"><span class="tag">API Gateway</span><span class="tag">Process Automation</span><span class="tag">Step Functions</span><span class="tag">Prompt Chaining</span><span class="tag">Decision Tables</span></div>
+      <div class="file">layer-4-ai-workflow.md</div>
+    </div>
+    <div class="stack-layer">
+      <div class="lnum">LAYER 3</div>
+      <div class="lname">AI &amp; Data Ontology Layer</div>
+      <div class="ldesc">Quality-controlled persistent derived data</div>
+      <div class="tags"><span class="tag">Semantic Data</span><span class="tag">Data Catalog &amp; Lineage</span><span class="tag">Knowledge Graph</span><span class="tag">ETL / Reverse ETL</span><span class="tag">Master Data Mgmt</span><span class="tag">Data Quality</span></div>
+      <div class="file">layer-3-ai-data-ontology.md</div>
+    </div>
+    <div class="stack-layer">
+      <div class="lnum">LAYER 2</div>
+      <div class="lname">Enterprise Resources Layer</div>
+      <div class="ldesc">Knowledge bases, APIs &amp; MCP servers</div>
+      <div class="tags"><span class="tag">Knowledge Bases</span><span class="tag">Org Assets &amp; MCP Servers</span><span class="tag">Services / APIs</span><span class="tag">Structured &amp; Unstructured</span><span class="tag">External AI Agents</span><span class="tag">Doc Summarization</span><span class="tag">Doc Classification</span></div>
+      <div class="file">layer-2-enterprise-resources.md</div>
+    </div>
+    <div class="stack-layer">
+      <div class="lnum">LAYER 1</div>
+      <div class="lname">Enterprise System Integrations</div>
+      <div class="ldesc">ISV &amp; tool integration blueprints</div>
+      <div class="tags"><span class="tag">Systems of Record (Salesforce, SAP, Oracle)</span><span class="tag">Systems of Knowledge (Confluence, SharePoint)</span><span class="tag">Systems of Activity (Slack, Teams, Jira)</span><span class="tag">AgentCore Gateway</span><span class="tag">EventBridge</span></div>
+      <div class="file">layer-1-enterprise-integrations.md</div>
+    </div>
+    <div class="stack-layer">
+      <div class="lnum">LAYER 0</div>
+      <div class="lname">Infrastructure &amp; Platform</div>
+      <div class="ldesc">Cloud foundation — IaC, VPC, containers, auth</div>
+      <div class="tags"><span class="tag">Cloud Account / VPC</span><span class="tag">Container Runtime</span><span class="tag">IaC (CDK / Terraform)</span><span class="tag">GPU Provisioning</span><span class="tag">Service Discovery</span><span class="tag">Auth &amp; Identity (Cognito)</span></div>
+      <div class="file">layer-0-infrastructure.md</div>
+    </div>
+  </div>
+
+  <!-- RIGHT RAIL -->
+  <div class="rail">
+    <div class="rail-card ops">
+      <h4>&#128202; Observability &amp; Evaluation</h4>
+      <ul><li>AgentCore Observability</li><li>CloudWatch GenAI</li><li>Langfuse / Datadog / Grafana</li><li>Agent Evaluation &amp; Quality</li><li>Predictive Analytics</li><li>Anomaly Detection</li><li>Real-time Dashboards</li><li>Cost Governance &amp; Tokens</li></ul>
+    </div>
+    <div class="rail-card ops">
+      <h4>&#129514; Testing &amp; Quality</h4>
+      <ul><li>Unit &amp; Integration Tests</li><li>Agent Evaluation Suite</li><li>Strands Evals + RAGAS</li><li>Seed Data &amp; Fixtures</li><li>Quality Gates</li><li>E2E Flow Testing</li></ul>
+    </div>
+    <div class="rail-card ops">
+      <h4>&#127981; Industry Verticals</h4>
+      <ul><li>Healthcare &amp; Life Sciences</li><li>Financial Services</li><li>Insurance</li><li>Retail &amp; E-Commerce</li><li>Manufacturing &amp; Auto</li><li>Energy &amp; Utilities</li><li>Telecom</li><li>Legal</li><li>Public Sector</li></ul>
+    </div>
+    <div class="rail-card ops">
+      <h4>&#128260; Resilience &amp; Ops</h4>
+      <ul><li>Error Handling &amp; Retries</li><li>DLQs &amp; Circuit Breakers</li><li>Backup &amp; DR</li><li>Auto-scaling</li><li>Secrets Management</li><li>Provisioned Concurrency</li></ul>
+    </div>
+  </div>
+</div>
+
+<section class="prod-bar">
+  <h3>PRODUCTION DEPLOYMENT</h3>
+  <div class="tags">
+    <span class="tag">Multi-Account (Dev/Staging/Prod)</span>
+    <span class="tag">Private VPC + Endpoints</span>
+    <span class="tag">Managed LLM (Bedrock)</span>
+    <span class="tag">AgentCore Runtime</span>
+    <span class="tag">Kiro Workspace</span>
+    <span class="tag">Cognito + RBAC</span>
+    <span class="tag">CloudWatch + Langfuse</span>
+    <span class="tag">Backup &amp; DR</span>
+  </div>
+</section>
+
+<div class="legend">
+  <span class="legend-item"><span class="swatch cap"></span> Capability</span>
+  <span class="legend-item"><span class="swatch kiro-sw"></span> Kiro = This Layer</span>
+</div>
+
+<footer>
+  Self-contained reference architecture for the AWS App Builder program &middot; part of the FDE Delivery Kit.<br>
+  Layer numbering matches <code>documentation/REFERENCES.md</code> and the <code>ai-native-app-builder</code> reference files.
+</footer>
+</body>
+</html>

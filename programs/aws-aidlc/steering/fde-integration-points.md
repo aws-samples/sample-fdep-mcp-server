@@ -19,11 +19,11 @@ When executing AI-DLC stages that produce design or code artifacts, the agent MU
 ### During INCEPTION — Application Design Stage
 1. Read `.fde-manifest.json` to identify available references
 2. Consult architecture references BEFORE designing components:
-   - `layer-infra-cloud-foundation.md` — what AWS services are available
-   - `layer-6-ai-agents.md` — agent topology patterns (single vs multi-agent)
+   - `layer-0-infrastructure.md` — what AWS services are available
+   - `layer-7-ai-agents.md` — agent topology patterns (single vs multi-agent)
    - `layer-4-ai-workflow.md` — orchestration patterns (Step Functions, async)
    - `layer-2-enterprise-resources.md` — data stores, queues, APIs
-   - `layer-5-ai-app-creation.md` — UI patterns and auth
+   - `layer-6-ai-app-creation.md` — UI patterns and auth
 3. Use these to inform component identification, service layer design, and AWS service selection
 4. Call: `fde_get_skill(skillId="build-aws-app", file="references/<filename>")`
 
@@ -37,17 +37,17 @@ When executing AI-DLC stages that produce design or code artifacts, the agent MU
 ### During CONSTRUCTION — Functional Design / NFR Design / Infrastructure Design
 1. Read `.fde-manifest.json` for the relevant category
 2. Consult layer references matching the design type:
-   - Functional Design → `layer-4-ai-workflow.md`, `layer-6-ai-agents.md`
+   - Functional Design → `layer-4-ai-workflow.md`, `layer-7-ai-agents.md`
    - NFR Design → `cross-observability-evaluation.md`, resilience references
-   - Infrastructure Design → `layer-infra-cloud-foundation.md`, `cross-deployment-guide.md`
+   - Infrastructure Design → `layer-0-infrastructure.md`, `cross-deployment-guide.md`
 3. Call: `fde_get_skill(skillId="build-aws-app", file="references/<filename>")`
 
 ### During CONSTRUCTION — Code Generation
 1. Read `.fde-manifest.json` for ALL references matching the unit being built
 2. Consult the specific layer references per `consult-references.md`:
-   - Frontend code → `layer-5-ai-app-creation.md`, `layer-5-ui-implementation.md`
-   - Agent code → `layer-6-ai-agents.md`
-   - Infrastructure → `layer-infra-cloud-foundation.md`
+   - Frontend code → `layer-6-ai-app-creation.md`, `layer-6-ui-implementation.md`
+   - Agent code → `layer-7-ai-agents.md`
+   - Infrastructure → `layer-0-infrastructure.md`
    - Data layer → `layer-3-ai-data-ontology.md`
 3. Use EXACT patterns from references — do not generate from memory
 

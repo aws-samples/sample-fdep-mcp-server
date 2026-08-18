@@ -198,16 +198,16 @@ For Claude engagements:
 ### multi-layer architecture (always read in order)
 
 1. `cross-spec-driven-methodology.md` — read FIRST, before any code
-2. `layer-infra-cloud-foundation.md`
+2. `layer-0-infrastructure.md`
 3. `layer-1-enterprise-integrations.md`
 4. `layer-2-enterprise-resources.md`
 5. `layer-3-ai-data-ontology.md`
 6. `layer-4-ai-workflow.md`
-7. `layer-5-ai-app-creation.md` — architecture and approach selection
-8. `layer-5-ui-implementation.md` — implementation-ready React/Chat/Dashboard/Upload code
-9. `layer-5b-ai-model-management.md`
-10. `layer-6-ai-agents.md` — links to the AgentCore deployment deep-dive
-11. `layer-7-developer-experience.md`
+7. `layer-5-ai-model-management.md`
+8. `layer-6-ai-app-creation.md` — architecture and approach selection
+9. `layer-6-ui-implementation.md` — implementation-ready React/Chat/Dashboard/Upload code
+10. `layer-7-ai-agents.md` — links to the AgentCore deployment deep-dive
+11. `layer-8-developer-experience.md`
 12. `cross-governance-security.md`
 13. `cross-observability-evaluation.md`
 14. `cross-industry-verticals.md` — links to the Insurance claims deep-dive

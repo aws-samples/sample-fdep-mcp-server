@@ -265,7 +265,7 @@ aws s3 sync dist/ s3://claims-portal-frontend-<ACCOUNT_ID> --delete
 aws s3 website s3://claims-portal-frontend-<ACCOUNT_ID> --index-document index.html --error-document index.html
 ```
 
-For production with CloudFront (HTTPS + custom domain), add the CloudFront distribution to your CDK stack (see `layer-5-ui-implementation.md`).
+For production with CloudFront (HTTPS + custom domain), add the CloudFront distribution to your CDK stack (see `layer-6-ui-implementation.md`).
 
 #### Option C: Amplify Hosting (Simplest)
 

@@ -1,4 +1,4 @@
-# ⬡ Infrastructure — Cloud Platform & Foundation
+# Layer 0 — Infrastructure & Platform (Cloud Foundation)
 
 ## Purpose
 

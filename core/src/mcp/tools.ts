@@ -181,7 +181,7 @@ export const MCP_TOOLS: readonly McpToolDeclaration[] = [
         file: {
           type: "string",
           description:
-            "Optional relative path to a file within the skill's program directory (e.g. 'references/layer-5-ai-app-creation.md'). When provided, returns the file content instead of the skill definition.",
+            "Optional relative path to a file within the skill's program directory (e.g. 'references/layer-6-ai-app-creation.md'). When provided, returns the file content instead of the skill definition.",
         },
       },
     },

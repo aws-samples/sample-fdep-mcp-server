@@ -25,15 +25,15 @@ When generating code during any AI-DLC Construction Code Generation stage:
    - **Fallback (MCP):** `fde_get_skill(skillId="build-aws-app", file="references/<filename>")`
 
 3. **For frontend code**, read these references first:
-   - `layer-5-ai-app-creation.md` (UI patterns, auth, file upload)
-   - `layer-5-ui-implementation.md` (Amplify config, API client, streaming, deployment)
+   - `layer-6-ai-app-creation.md` (UI patterns, auth, file upload)
+   - `layer-6-ui-implementation.md` (Amplify config, API client, streaming, deployment)
 
 4. **For infrastructure code**, read:
-   - `layer-infra-cloud-foundation.md`
+   - `layer-0-infrastructure.md`
    - `cross-deployment-guide.md`
 
 5. **For agent/AI code**, read:
-   - `layer-6-ai-agents.md`
+   - `layer-7-ai-agents.md`
    - `layer-4-ai-workflow.md`
 
 6. **For data layer code**, read:
@@ -57,4 +57,4 @@ When generating code during any AI-DLC Construction Code Generation stage:
 
 ## Rationale
 
-This rule exists because agents generate framework code from training data that drifts out of date. A representative failure: an Amplify v6 `Amplify.configure()` call was generated in an outdated format that triggered Cognito 400 errors, even though the correct pattern was already documented in `layer-5-ui-implementation.md` — it simply wasn't consulted before code generation. Consulting the version-specific reference first prevents this class of error.
+This rule exists because agents generate framework code from training data that drifts out of date. A representative failure: an Amplify v6 `Amplify.configure()` call was generated in an outdated format that triggered Cognito 400 errors, even though the correct pattern was already documented in `layer-6-ui-implementation.md` — it simply wasn't consulted before code generation. Consulting the version-specific reference first prevents this class of error.
