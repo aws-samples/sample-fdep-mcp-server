@@ -2,7 +2,7 @@
 
 An MCP server that helps forward-deployed engineers **build AI-native applications on AWS** from tested architecture patterns. Describe a customer's situation (industry, goals, AI maturity), and the kit activates the right programs, applies industry-specific lenses, and guides the agent through a structured delivery — from requirements through working code and deployment.
 
-The kit doesn't just configure an agent workspace — it drives actual application development using 26 verified reference patterns (CDK stacks, Python agents, Bedrock configuration, React UI) and the AWS AI-DLC methodology (Inception → Construction → Operations). Programs interleave during delivery: architecture decisions feed requirements, requirements feed code generation, RAI reviews produce guardrail configs that get implemented, resilience patterns get deployed.
+The kit doesn't just configure an agent workspace — it drives actual application development using 27 verified reference patterns (CDK stacks, Python agents, Bedrock configuration, React UI) and the AWS AI-DLC methodology (Inception → Construction → Operations). Programs interleave during delivery: architecture decisions feed requirements, requirements feed code generation, RAI reviews produce guardrail configs that get implemented, resilience patterns get deployed.
 
 ---
 
@@ -195,7 +195,7 @@ Typical workflow: `fde_init_workspace` → `fde_load_intention` → `fde_resolve
 
 | Program | Purpose | Based on |
 |---------|---------|----------|
-| [`ai-native-app-builder`](programs/ai-native-app-builder/) | Build AI-native apps on AWS with multi-layer architecture | 26 tested reference patterns |
+| [`ai-native-app-builder`](programs/ai-native-app-builder/) | Build AI-native apps on AWS with multi-layer architecture | 27 tested reference patterns |
 | [`aws-aidlc`](programs/aws-aidlc/) | AI-Driven Development Lifecycle (Inception → Construction → Operations) | [awslabs/aidlc-workflows](https://github.com/awslabs/aidlc-workflows) |
 | [`aim`](programs/aim/) | AI Maturity Assessment across 6 perspectives | [AWS Gen AI Maturity Model](https://docs.aws.amazon.com/prescriptive-guidance/latest/strategy-gen-ai-maturity-model/) |
 | [`agentpath`](programs/agentpath/) | Agentic AI architecture decisions, HITL, guardrails | [AWS Agentic AI Patterns](https://docs.aws.amazon.com/prescriptive-guidance/latest/agentic-ai-patterns/agent-patterns.html) |
@@ -247,6 +247,7 @@ fde-kit/
 |---|---|---|
 | [User Guide](documentation/USER-GUIDE.md) | All users | Programs, lenses, activation logic, engagement flow |
 | [Program Catalog](documentation/PROGRAMS.md) | All users | Detailed reference for all 9 programs with skills, activation rules, and stages |
+| [Reference Pattern Catalog](documentation/REFERENCES.md) | All users | The tested reference patterns, layer methodology, and how the agent consults them |
 | [Industry Lenses](documentation/LENSES.md) | All users | 6 industry lenses with AWS Well-Architected references |
 | [Quick Start](documentation/QUICKSTART.md) | Engineers, FDEs | MCP setup, first engagement in 5 minutes |
 | [MCP Tool Reference](documentation/MCP-TOOLS.md) | Developers | Detailed parameters, examples, error handling for all 12 tools |

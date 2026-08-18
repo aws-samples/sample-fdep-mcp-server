@@ -40,10 +40,12 @@ templates: []
 
 playbooks: []
 
-# Reference material — 26 files covering the AI Native multi-layer architecture (18)
-# plus deep-dive content for the Insurance vertical (4) and AgentCore deployment
-# (4). These render into the engagement so the agent can navigate to the right
-# detail when running /build-app, /scaffold-app, or deploying with agentcore.
+# Reference material — 27 files: the AI Native multi-layer architecture
+# (11 layer references + 8 cross-cutting references) plus deep-dive content for
+# the Insurance vertical (4) and AgentCore deployment (4). These render into the
+# engagement so the agent can navigate to the right detail when running
+# /build-app, /scaffold-app, or deploying with agentcore.
+# See documentation/REFERENCES.md for the full catalog.
 references:
   # multi-layer architecture
   - references/cross-deployment-guide.md
