@@ -37,8 +37,8 @@ The FDE overlay folds model management into L6 (Agents), but in practice:
 from aws_cdk import aws_bedrock as bedrock
 
 provisioned_model = bedrock.CfnProvisionedModelThroughput(self, "ProvisionedClaude",
-    model_id="anthropic.claude-3-sonnet-20240229-v1:0",
-    provisioned_model_name="claims-agent-claude",
+    model_id="<current-inference-profile-id>",  # resolve live — see below
+    provisioned_model_name="agent-claude",
     model_units=1,  # Each unit = specific tokens/min
 )
 ```
@@ -48,22 +48,32 @@ provisioned_model = bedrock.CfnProvisionedModelThroughput(self, "ProvisionedClau
 ```python
 # Use inference profiles for automatic failover
 model = BedrockModel(
-    model_id="us.anthropic.claude-3-sonnet-20240229-v1:0",  # Cross-region profile
+    model_id="us.<current-inference-profile-id>",  # cross-region profile
     region_name="us-east-1",
 )
 ```
 
-**Model selection decision tree:**
+> **Model IDs are not hardcoded here.** Bedrock model IDs are deprecated within
+> months. Resolve the current, ACTIVE inference-profile ID at build time via the
+> AWS MCP server, per the `bedrock-model-selection.md` steering rule (Rule 0).
+> Authoritative sources: [model lifecycle](https://docs.aws.amazon.com/bedrock/latest/userguide/model-lifecycle.html)
+> and [inference-profile support](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html).
+
+**Model selection decision tree** (choose the model *family/tier*, then resolve
+the current version live via the AWS MCP server):
 
 ```
 Is response quality critical? (legal, medical, financial)
-  YES → Claude 3.5 Sonnet or Opus
+  YES → latest Claude Sonnet/Opus tier
   NO → Is latency critical? (real-time chat)
-    YES → Claude 3 Haiku or Nova Lite
+    YES → a fast tier (latest Claude Haiku or Amazon Nova Lite)
     NO → Is cost the primary concern?
-      YES → Nova Micro or Haiku
-      NO → Claude 3.5 Sonnet (default choice)
+      YES → a cost tier (Amazon Nova Micro or latest Haiku)
+      NO → latest Claude Sonnet tier (default choice)
 ```
+
+Pick the tier here; resolve the exact current inference-profile ID at build time
+(see `bedrock-model-selection.md`). Do not pin a dated version in generated code.
 
 ### 2. Prompt Management
 
@@ -88,7 +98,7 @@ response = bedrock_agent.create_prompt(
                     "text": "You are an insurance claims processing agent..."
                 }
             },
-            "modelId": "anthropic.claude-3-sonnet-20240229-v1:0",
+            "modelId": "<current-inference-profile-id>",  # resolve live (see bedrock-model-selection.md)
             "inferenceConfiguration": {
                 "text": {"temperature": 0.1, "maxTokens": 4096}
             },
@@ -217,19 +227,21 @@ rule.add_target(targets.LambdaFunction(kb_sync_lambda))
 
 MODELS = {
     "agent_primary": {
-        "model_id": "anthropic.claude-3-sonnet-20240229-v1:0",
+        # Resolve the current ACTIVE inference-profile ID at build time via the
+        # AWS MCP server, then pin the resolved value here for reproducibility.
+        "model_id": "<current-sonnet-tier-inference-profile-id>",
         "max_tokens": 4096,
         "temperature": 0.1,
         "description": "Primary agent model — balanced quality/cost",
     },
     "agent_fast": {
-        "model_id": "anthropic.claude-3-haiku-20240307-v1:0",
+        "model_id": "<current-haiku-tier-inference-profile-id>",
         "max_tokens": 2048,
         "temperature": 0.0,
         "description": "Fast model for classification and routing",
     },
     "embedding": {
-        "model_id": "amazon.titan-embed-text-v2:0",
+        "model_id": "<current-embedding-model-id>",  # e.g. an Amazon Titan/Nova embedding profile
         "dimensions": 1024,
         "description": "Embedding model for Knowledge Base",
     },
@@ -241,6 +253,11 @@ MODELS = {
 - Evaluation results are only valid for the tested version
 - Rollback requires knowing which version was in production
 - Compliance/audit requires traceability
+
+**Pin the *resolved* ID, not one from memory.** Resolve the current ACTIVE model
+for the region via the AWS MCP server (see `bedrock-model-selection.md`), then
+record that value here. Re-verify at each deployment — pinned IDs reach
+end-of-life and must be refreshed.
 
 ### 6. Fine-Tuning (When Needed)
 
@@ -274,10 +291,12 @@ BENCHMARK_CASES = [
     # ... 50+ cases covering edge cases
 ]
 
+# Populate with current ACTIVE inference-profile IDs resolved via the AWS MCP
+# server (see bedrock-model-selection.md). Compare the tiers you're choosing between.
 MODELS_TO_TEST = [
-    "anthropic.claude-3-sonnet-20240229-v1:0",
-    "anthropic.claude-3-haiku-20240307-v1:0",
-    "amazon.nova-pro-v1:0",
+    "<current-sonnet-tier-inference-profile-id>",
+    "<current-haiku-tier-inference-profile-id>",
+    "<current-nova-tier-inference-profile-id>",
 ]
 
 async def benchmark():

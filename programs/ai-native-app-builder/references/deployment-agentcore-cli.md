@@ -100,10 +100,14 @@ The CLI uses `agentcore.json` for project configuration:
   },
   "model": {
     "provider": "bedrock",
-    "modelId": "anthropic.claude-sonnet-4-20250514-v1:0"
+    "modelId": "<current-inference-profile-id>"
   }
 }
 ```
+
+> Resolve `<current-inference-profile-id>` live via the AWS MCP server before
+> deploying — see `bedrock-model-selection.md`. Dated model IDs are deprecated
+> within months.
 
 ## MCP Configuration (mcp.json)
 

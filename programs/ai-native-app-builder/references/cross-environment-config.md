@@ -97,10 +97,12 @@ class ClaimsProcessingStack(Stack):
 ```python
 from aws_cdk import aws_ssm as ssm
 
-# Store config in SSM
+# Store config in SSM. Resolve the current inference-profile ID live via the
+# AWS MCP server (see bedrock-model-selection.md); storing it in SSM lets you
+# refresh the model without a code change when it reaches end-of-life.
 ssm.StringParameter(self, "AgentModelId",
     parameter_name=f"/claims-app/{env_name}/agent-model-id",
-    string_value="anthropic.claude-3-sonnet-20240229-v1:0",
+    string_value="<current-inference-profile-id>",
 )
 
 ssm.StringParameter(self, "HighValueThreshold",

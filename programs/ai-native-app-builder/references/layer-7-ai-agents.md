@@ -49,7 +49,9 @@ def my_tool(param: str) -> dict:
     # Implementation
     return {"result": "..."}
 
-model = BedrockModel(model_id="anthropic.claude-3-sonnet-20240229-v1:0")
+# Resolve <current-inference-profile-id> live via the AWS MCP server — see
+# bedrock-model-selection.md. Do not hardcode a dated model ID.
+model = BedrockModel(model_id="<current-inference-profile-id>")
 agent = Agent(model=model, system_prompt="...", tools=[my_tool])
 response = agent("User message")
 ```
@@ -60,7 +62,7 @@ response = agent("User message")
 # CDK
 agent = bedrock.CfnAgent(self, "MyAgent",
     agent_name="claims-agent",
-    foundation_model="anthropic.claude-3-sonnet-20240229-v1:0",
+    foundation_model="<current-inference-profile-id>",  # resolve live — see bedrock-model-selection.md
     instruction="You are a claims processing agent...",
     action_groups=[...],
     knowledge_bases=[...],
