@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://aine.dev/schemas/intention.schema.json",
+  "$id": "https://github.com/aws-samples/sample-fdep-mcp-server/blob/main/schemas/intention.schema.json",
   "title": "Intention",
   "description": "An intention file describing a customer's observable state — AI Maturity Model scores, industry, cloud posture, regulatory context, production AI inventory, team shape, and engagement goals. Serves as the sole input to resolution in the intention-driven delivery system. See design.md §Data Models — Model 1.",
   "type": "object",

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://aine.dev/schemas/skill.schema.json",
+  "$id": "https://github.com/aws-samples/sample-fdep-mcp-server/blob/main/schemas/skill.schema.json",
   "title": "Skill",
   "description": "A discrete, invokable capability parsed from a markdown file with YAML frontmatter. See design.md §Data Models — Model 2.",
   "type": "object",

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://aine.dev/schemas/lens.schema.json",
+  "$id": "https://github.com/aws-samples/sample-fdep-mcp-server/blob/main/schemas/lens.schema.json",
   "title": "Lens",
   "description": "An industry overlay manifest that composes with base Programs by adding or overriding steering, skills, exit criteria, or tags. Lenses never silently remove program behavior; they can augment (add*) or override (override*). See design.md Lens Schema and Composition Semantics.",
   "type": "object",

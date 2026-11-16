@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://aine.dev/schemas/steering.schema.json",
+  "$id": "https://github.com/aws-samples/sample-fdep-mcp-server/blob/main/schemas/steering.schema.json",
   "title": "SteeringFile",
   "description": "A steering file parsed from a markdown file with YAML frontmatter. Steering is injected into the agent context, either always-on, auto-triggered by a glob match, or manually referenced. See design.md §Data Models — Model 3.",
   "type": "object",
