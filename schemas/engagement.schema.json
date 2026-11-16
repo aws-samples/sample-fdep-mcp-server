@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://aine.dev/schemas/engagement.schema.json",
+  "$id": "https://github.com/aws-samples/sample-fdep-mcp-server/blob/main/schemas/engagement.schema.json",
   "title": "EngagementState",
   "description": "The per-customer engagement state persisted at engagements/<customer>/state/current.yaml. See design.md §Data Models — Model 5.",
   "type": "object",

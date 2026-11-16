@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://aine.dev/schemas/program.schema.json",
+  "$id": "https://github.com/aws-samples/sample-fdep-mcp-server/blob/main/schemas/program.schema.json",
   "title": "ProgramManifest",
   "description": "Manifest for an FDE enablement program (program.yaml). See design.md §Data Models — Model 1.",
   "type": "object",
