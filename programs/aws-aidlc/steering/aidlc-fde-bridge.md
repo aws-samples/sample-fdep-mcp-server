@@ -90,8 +90,8 @@ AI-DLC's Operations phase is a placeholder in the upstream AWS Labs release. FDE
 |---|---|---|
 | Deployment planning and execution | `ai-native-app-builder` Phase 5 + `cross-deployment-guide` reference | `aidlc-docs/operations/deployment.md` (links to `artifacts/ai-native-app-builder/deploy-{ts}.md`) |
 | Monitoring and observability setup | `ai-native-app-builder` Phase 5 + `cross-observability-evaluation` reference | `aidlc-docs/operations/observability.md` (links to `artifacts/ai-native-app-builder/observability-{ts}.md`) |
-| Incident response procedures | `ai-operations` (AI BOM section 4) | `aidlc-docs/operations/incident-response.md` (links to `artifacts/ai-bom/bom-{ts}.md` Ã‚§4) |
-| Maintenance and support workflows | `ai-operations` (AI BOM sections 5↔6) | `aidlc-docs/operations/maintenance.md` (links to `artifacts/ai-bom/bom-{ts}.md` Ã‚§Ã‚§5↔6) |
+| Incident response procedures | `ai-operations` (AI BOM section 4) | `aidlc-docs/operations/incident-response.md` (links to `artifacts/ai-bom/bom-{ts}.md` section 4) |
+| Maintenance and support workflows | `ai-operations` (AI BOM sections 5↔6) | `aidlc-docs/operations/maintenance.md` (links to `artifacts/ai-bom/bom-{ts}.md` sections 5-6) |
 | Production readiness checklists | `ai-native-app-builder` `app-level` graduation criteria | `aidlc-docs/operations/production-readiness.md` (links to the `[MVP]` and `[Production]` lines in `aidlc-docs/inception/requirements/`) |
 | Resilience and failure-mode review | `resilience` | `aidlc-docs/operations/resilience.md` (links to `artifacts/resilience-reviews/resilience-{ts}.md`) |
 

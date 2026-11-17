@@ -8,7 +8,7 @@ priority: 75
 
 # AI-PLC Framework
 
-The velocity mismatch: developers are 3Ã— faster with AI assistants, but product managers still use manual, multi-week processes for discovery and specification. Net: teams ship faster in the middle of the lifecycle and nowhere else.
+The velocity mismatch: developers are 3x faster with AI assistants, but product managers still use manual, multi-week processes for discovery and specification. Net: teams ship faster in the middle of the lifecycle and nowhere else.
 
 ## The five PDLC stages
 
