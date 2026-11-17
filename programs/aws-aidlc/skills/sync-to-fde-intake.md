@@ -1,7 +1,7 @@
 ---
 id: sync-to-fde-intake
 name: Sync AI-DLC Inception to FDE Intake
-description: Reads AI-DLC's Inception artifacts under `aidlc-docs/inception/requirements/` and mirrors the verbatim values into FDE's `state/current.yaml` `intake.*` fields so FDE programs (AIM, RAI, App Builder, etc.) can read intake without parsing AI-DLC documents. Idempotent â-" re-running on a synced state detects this and does nothing.
+description: Reads AI-DLC's Inception artifacts under `aidlc-docs/inception/requirements/` and mirrors the verbatim values into FDE's `state/current.yaml` `intake.*` fields so FDE programs (AIM, RAI, App Builder, etc.) can read intake without parsing AI-DLC documents. Idempotent; re-running on a synced state detects this and does nothing.
 trigger:
   kind: command
   phrase: "/aidlc-sync"
@@ -55,7 +55,7 @@ Bridge AI-DLC's Inception artifacts to FDE's intake state. FDE programs (AIM, re
 5. **Write the thin pointer artifact at `artifacts/discovery/intake-{timestamp}.md`** that satisfies the `discovery` program's `discovery-complete` exit criterion. Content per `aidlc-handoff.md` template (now `aidlc-fde-bridge.md`):
 
    ```markdown
-   # Discovery â-" handed off to AI-DLC
+   # Discovery: handed off to AI-DLC
 
    **Engagement:** {customer}
    **Discovery surface:** AI-DLC Inception
@@ -127,5 +127,5 @@ The decision-trail is preserved across re-syncs; previous values are not erased 
 
 - **Inferring intake values that AI-DLC's requirements do not explicitly state.** If AI-DLC didn't capture it, the field is parked. FDE never makes up intake.
 - **Paraphrasing AI-DLC's verbatim text into shorter intake values.** The point of the verbatim audit log is preserved by mirroring exact strings.
-- **Marking `discoveryComplete: true` when fields are parked.** Parked is a `false` state â-" it tells downstream programs they cannot read certain fields yet.
+- **Marking `discoveryComplete: true` when fields are parked.** Parked is a `false` state; it tells downstream programs they cannot read certain fields yet.
 - **Writing into `aidlc-docs/`.** The sync only reads from AI-DLC's tree; it never writes there.

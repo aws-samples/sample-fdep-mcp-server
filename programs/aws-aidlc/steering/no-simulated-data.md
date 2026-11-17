@@ -17,20 +17,20 @@ This rule was created after a pattern failure observed across AI-DLC Constructio
 
 When generating code for any unit marked as "Code Generation" in the AI-DLC workflow:
 
-1. **Never use fake/simulated data** where the requirements specify real integration. If a Functional Requirement says "photo upload" â-" the code must actually upload to the data store, not generate fake keys or placeholder strings.
+1. **Never use fake/simulated data** where the requirements specify real integration. If a Functional Requirement says "photo upload", the code must actually upload to the data store, not generate fake keys or placeholder strings.
 
 2. **Never skip API endpoints** that are needed for end-to-end flow. If Component A calls Component B for data, the endpoint in B must exist, accept the request, and return real data. A TODO comment is not an endpoint.
 
-3. **Trace data flows before marking complete**. For every user story in scope, trace the full path: UI action â-' API call â-' service logic â-' data store write â-' data store read â-' response â-' UI render. Every hop must produce and consume real data.
+3. **Trace data flows before marking complete**. For every user story in scope, trace the full path: UI action -> API call -> service logic -> data store write -> data store read -> response -> UI render. Every hop must produce and consume real data.
 
-4. **TODO/mock comments are failures**. A comment that says `// TODO: implement real upload` or `// For PoC: simulate` means the requirement is not met. Either implement it or escalate to the FDE that the requirement cannot be met within the time box â-" do not silently skip it.
+4. **TODO/mock comments are failures**. A comment that says `// TODO: implement real upload` or `// For PoC: simulate` means the requirement is not met. Either implement it or escalate to the FDE that the requirement cannot be met within the time box, do not silently skip it.
 
 5. **Cross-unit seam verification**. When completing a unit that produces data consumed by another unit (e.g., S3 keys, DynamoDB records, API responses), verify the consuming unit can actually read what this unit writes. Data format, key structure, and access permissions must all align.
 
 ## What "mock" means in this context
 
 - **Acceptable mock**: The REQUIREMENT explicitly says to mock/stub something (e.g., "Mock/stub interface to existing PIR system"). The mock IS the implementation. The requirement is satisfied.
-- **Unacceptable mock**: The REQUIREMENT says to implement real functionality (e.g., "photo upload", "compensation calculation", "email notification"). Generating fake data, placeholder values, or TODO comments is not an implementation â-" it's a gap that must be flagged.
+- **Unacceptable mock**: The REQUIREMENT says to implement real functionality (e.g., "photo upload", "compensation calculation", "email notification"). Generating fake data, placeholder values, or TODO comments is not an implementation; it's a gap that must be flagged.
 
 ## How to distinguish
 
@@ -42,7 +42,7 @@ Read the requirement's Detail column literally:
 ## Enforcement
 
 - Applies to all Code Generation stages across all engagements
-- Applies regardless of appLevel (PoC, MVP, Production) â-" the level determines WHAT to build, not WHETHER to actually build it
+- Applies regardless of appLevel (PoC, MVP, Production); the level determines WHAT to build, not WHETHER to actually build it
 - If violated, the code must be fixed before the stage is marked complete
 - If fixing exceeds the time box, escalate to the FDE with: what was specified, what was skipped, and why
 
