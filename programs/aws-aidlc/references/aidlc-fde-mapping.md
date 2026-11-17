@@ -49,8 +49,8 @@ This is where AI-DLC's placeholder is completed by FDE. `complete-operations.md`
 |---|---|---|---|---|
 | Deployment planning and execution | `aidlc-docs/operations/deployment.md` | `ai-native-app-builder` | (Phase 5 deploy workflow) | `artifacts/ai-native-app-builder/deploy-{ts}.md` |
 | Monitoring and observability setup | `aidlc-docs/operations/observability.md` | `ai-native-app-builder` | (Phase 5 observability workflow) | `artifacts/ai-native-app-builder/observability-{ts}.md` |
-| Incident response procedures | `aidlc-docs/operations/incident-response.md` | `ai-operations` | `/ai-bom` | `artifacts/ai-bom/bom-{ts}.md` Ã‚§4 |
-| Maintenance and support workflows | `aidlc-docs/operations/maintenance.md` | `ai-operations` | `/ai-bom` | `artifacts/ai-bom/bom-{ts}.md` Ã‚§Ã‚§5↔6 |
+| Incident response procedures | `aidlc-docs/operations/incident-response.md` | `ai-operations` | `/ai-bom` | `artifacts/ai-bom/bom-{ts}.md` section 4 |
+| Maintenance and support workflows | `aidlc-docs/operations/maintenance.md` | `ai-operations` | `/ai-bom` | `artifacts/ai-bom/bom-{ts}.md` sections 5-6 |
 | Production readiness checklists | `aidlc-docs/operations/production-readiness.md` | `ai-native-app-builder` `app-level` graduation | (read-from-Inception) | Tagged criteria in `aidlc-docs/inception/requirements/` |
 | Resilience and failure-mode review | `aidlc-docs/operations/resilience.md` | `resilience` | `/resilience-review` | `artifacts/resilience-reviews/resilience-{ts}.md` |
 
@@ -78,7 +78,7 @@ These run independently of AI-DLC even when `aws-aidlc` is active.
 | `discovery-complete` (when `discoverySource: "aidlc"`) | `evidence.source: "aidlc-audit"`, timestamp from `aidlc-docs/audit.md` |
 | `aidlc-inception-complete` | Same as above |
 | `aidlc-construction-complete` | Same as above |
-| `aidlc-operations-substage-complete` (Ãƒ—6) | Same as above for each sub-stage |
+| `aidlc-operations-substage-complete` (x6) | Same as above for each sub-stage |
 | `aidlc-operations-complete` | Same as above |
 | Any FDE-only decision (e.g., `aim-complete`, `rai-review-complete`) | `evidence.source: "chat"` or `evidence.source: "artifact"`, citing the FDE's verbatim acknowledgement or the artifact path |
 
