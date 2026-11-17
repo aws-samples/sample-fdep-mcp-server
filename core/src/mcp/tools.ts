@@ -57,8 +57,8 @@ export const MCP_TOOLS: readonly McpToolDeclaration[] = [
       required: ["schemaVersion", "customer", "goals", "updatedAt"],
       additionalProperties: true,
       properties: {
-        schemaVersion: { type: "string" },
-        customer: { type: "string", description: "Customer identifier in kebab-case" },
+        schemaVersion: { type: "string", enum: ["1"], description: "Intention schema version. Must be the string \"1\"." },
+        customer: { type: "string", description: "Customer identifier in kebab-case, e.g. \"any-bank\"" },
         goals: { type: "array", items: { type: "string" }, description: "Array of goal identifiers" },
         updatedAt: { type: "string", description: "ISO-8601 timestamp" },
         industry: { type: "string", description: "Industry vertical (e.g. healthcare, financial-services, retail, manufacturing)" },
@@ -213,7 +213,7 @@ export const MCP_TOOLS: readonly McpToolDeclaration[] = [
   {
     name: "fde_patch_intention",
     description:
-      "Apply a partial patch to a loaded intention. Modes: 'merge' (default) or 'replace'. Use between load_intention and resolve to add or modify fields (e.g. regulated, aim scores).",
+      "Apply a partial patch to a loaded intention. Modes: 'merge' (default) or 'replace'. Use between load_intention and resolve to add or modify fields (e.g. regulated, aim scores). Once the engagement has been rendered or resumed in this session (or engagementDir is given), the patch is written to state/intention.json and state/current.yaml and an intention-patched decision with the changed fields and reason is appended to state/history.jsonl; before that, it is recorded on the next fde_render.",
     inputSchema: {
       type: "object",
       required: ["intentionId", "patch"],
@@ -222,6 +222,8 @@ export const MCP_TOOLS: readonly McpToolDeclaration[] = [
         intentionId: { type: "string" },
         mode: { type: "string", enum: ["merge", "replace"] },
         patch: { type: "object", additionalProperties: true },
+        reason: { type: "string", description: "Why the intention changed; recorded in history." },
+        engagementDir: { type: "string", description: "Absolute engagement folder to record into. Optional." },
       },
     },
   },

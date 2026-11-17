@@ -29,7 +29,7 @@ import { plan as legacyPlan } from "../planner/index.js";
 import { loadPipelineDef } from "../planner/pipelineDef.js";
 import { selectAimMode } from "../aim/select.js";
 import type { AimAssessmentResult, AimMode, AimRecommendation } from "../aim/types.js";
-import { initState, type EngagementState } from "../state/index.js";
+import { initState, updateState, loadState, type EngagementState } from "../state/index.js";
 import { validateEngagementDir, isPathContainedIn } from "../security/path-validation.js";
 import { checkIntentionLimit, checkIntentionPayloadSize } from "../security/session-limits.js";
 import { auditLog } from "../security/audit.js";
@@ -46,6 +46,18 @@ export interface HandlerContext {
   readonly lenses: readonly LoadedLens[];
   /** Session-scoped intention handles. */
   readonly intentions: Map<string, Intention>;
+  /** Engagement folder per intentionId, learned from render or context resume. */
+  readonly engagementDirs: Map<string, string>;
+  /** Patches applied before the engagement folder was known; recorded on render. */
+  readonly pendingPatches: Map<string, IntentionPatchRecord[]>;
+}
+
+/** What gets recorded in history for one `fde_patch_intention` call. */
+export interface IntentionPatchRecord {
+  ts: string;
+  fields: string[];
+  mode: "merge" | "replace";
+  reason?: string;
 }
 
 /**
@@ -67,6 +79,8 @@ export function buildHandlerContext(workspaceRoot: string): HandlerContext {
     programs,
     lenses: lensResult.lenses,
     intentions: new Map(),
+    engagementDirs: new Map(),
+    pendingPatches: new Map(),
   };
 }
 
@@ -127,6 +141,11 @@ export async function handleLoadIntention(
     }
   }
 
+  // Agents often send schemaVersion as 1 or "1.0"; both mean schema "1".
+  if (input && typeof input === "object" && "schemaVersion" in input) {
+    const raw = input as Record<string, unknown>;
+    if (raw.schemaVersion === 1 || raw.schemaVersion === "1.0") raw.schemaVersion = "1";
+  }
   const intention = validateIntention(input, schemasDir);
   const id = randomUUID();
   ctx.intentions.set(id, intention);
@@ -235,9 +254,22 @@ export async function handleRender(ctx: HandlerContext, input: RenderInput) {
   writeFileSync(join(stateDir, "resolution.json"), JSON.stringify(graph, null, 2), "utf-8");
 
   // Bootstrap state/current.yaml so downstream skills can read/write it.
-  // Only create if it doesn't already exist (avoid clobbering mid-engagement state).
+  // If it already exists, sync the current intention into it and record the
+  // change in history instead of clobbering mid-engagement state.
   const currentYamlPath = join(stateDir, "current.yaml");
-  if (!existsSync(currentYamlPath)) {
+  const pending = ctx.pendingPatches.get(input.intentionId) ?? [];
+  ctx.pendingPatches.delete(input.intentionId);
+  ctx.engagementDirs.set(input.intentionId, absDir);
+  if (existsSync(currentYamlPath)) {
+    try {
+      syncIntentionToState(absDir, intention, "intention-synced", { patches: pending });
+    } catch (e) {
+      // A hand-edited or malformed current.yaml must not block rendering.
+      process.stderr.write(
+        `[fde_render] could not sync intention into state/current.yaml: ${(e as Error).message}\n`,
+      );
+    }
+  } else {
     const now = new Date().toISOString();
     const engagementState: EngagementState = {
       customer: intention.customer,
@@ -255,6 +287,7 @@ export async function handleRender(ctx: HandlerContext, input: RenderInput) {
             goals: intention.goals,
             industry: intention.industry,
             regulated: (intention as unknown as Record<string, unknown>).regulated ?? false,
+            ...(pending.length > 0 ? { patches: pending } : {}),
           },
         },
       ],
@@ -296,16 +329,99 @@ export async function handleRender(ctx: HandlerContext, input: RenderInput) {
 /*  Tool: fde_patch_intention                                          */
 /* ------------------------------------------------------------------ */
 
+export interface PatchIntentionInput {
+  intentionId: string;
+  patch: IntentionPatch;
+  mode?: "merge" | "replace";
+  /** Why the intention changed; recorded in state/history.jsonl. */
+  reason?: string;
+  /** Engagement folder to record into; defaults to the one this session rendered or resumed. */
+  engagementDir?: string;
+}
+
 export async function handlePatchIntention(
   ctx: HandlerContext,
-  input: { intentionId: string; patch: IntentionPatch; mode?: "merge" | "replace" },
-): Promise<{ intention: Intention }> {
+  input: PatchIntentionInput,
+): Promise<{ intention: Intention; recordedIn: string | null }> {
   const base = ctx.intentions.get(input.intentionId);
   if (!base) throw new Error(`Unknown intentionId '${input.intentionId}'`);
   const schemasDir = join(ctx.workspaceRoot, "schemas");
-  const next = applyIntentionPatch(base, input.patch, input.mode ?? "merge", schemasDir);
+  const mode = input.mode ?? "merge";
+  const next = applyIntentionPatch(base, input.patch, mode, schemasDir);
   ctx.intentions.set(input.intentionId, next);
-  return { intention: next };
+
+  const record: IntentionPatchRecord = {
+    ts: new Date().toISOString(),
+    fields: changedFields(base, next),
+    mode,
+    ...(input.reason ? { reason: input.reason } : {}),
+  };
+
+  const dir = input.engagementDir
+    ? validateEngagementDir(input.engagementDir)
+    : ctx.engagementDirs.get(input.intentionId);
+  if (dir && existsSync(join(dir, "state", "current.yaml"))) {
+    ctx.engagementDirs.set(input.intentionId, dir);
+    writeFileSync(
+      join(dir, "state", "intention.json"),
+      JSON.stringify({ intentionId: input.intentionId, intention: next }, null, 2),
+      "utf-8",
+    );
+    syncIntentionToState(dir, next, "intention-patched", { ...record }, true);
+    return { intention: next, recordedIn: dir };
+  }
+
+  // No engagement on disk yet: keep the record so the next render logs it.
+  const queue = ctx.pendingPatches.get(input.intentionId) ?? [];
+  queue.push(record);
+  ctx.pendingPatches.set(input.intentionId, queue);
+  return { intention: next, recordedIn: null };
+}
+
+/**
+ * Top-level intention fields whose values differ between `a` and `b`.
+ */
+function changedFields(a: unknown, b: unknown): string[] {
+  const ra = (a ?? {}) as Record<string, unknown>;
+  const rb = (b ?? {}) as Record<string, unknown>;
+  const keys = new Set([...Object.keys(ra), ...Object.keys(rb)]);
+  return [...keys].filter((k) => stableJson(ra[k]) !== stableJson(rb[k])).sort();
+}
+
+function stableJson(value: unknown): string {
+  const sort = (v: unknown): unknown => {
+    if (v === null || typeof v !== "object") return v;
+    if (Array.isArray(v)) return v.map(sort);
+    const o = v as Record<string, unknown>;
+    return Object.fromEntries(Object.keys(o).sort().map((k) => [k, sort(o[k])]));
+  };
+  return JSON.stringify(sort(value)) ?? "undefined";
+}
+
+/**
+ * Merge the intention into state/current.yaml (intake, intent, aimTier) and
+ * append a decision to state/history.jsonl. Without `always`, nothing is
+ * written when the intake already matches the intention.
+ */
+function syncIntentionToState(
+  engagementDir: string,
+  intention: Intention,
+  kind: "intention-patched" | "intention-synced",
+  detail: Record<string, unknown>,
+  always = false,
+): void {
+  const current = loadState(engagementDir);
+  const fields = changedFields(current.intake, intention);
+  if (fields.length === 0 && !always) return;
+  updateState(
+    engagementDir,
+    {
+      intake: intention as unknown as Record<string, unknown>,
+      intent: [...intention.goals],
+      aimTier: intention.aim?.overall as (1 | 2 | 3 | 4 | 5 | undefined),
+    },
+    { actor: kind === "intention-patched" ? "fde" : "system", kind, detail: { ...detail, changedFields: fields } },
+  );
 }
 
 /* ------------------------------------------------------------------ */
@@ -684,6 +800,7 @@ export async function handleGetEngagementContext(
         // Rehydrate into session so subsequent calls work
         const id = raw.intentionId ?? randomUUID();
         ctx.intentions.set(id, intention);
+        ctx.engagementDirs.set(id, absDir);
         intentionId = id;
       }
     } catch {
