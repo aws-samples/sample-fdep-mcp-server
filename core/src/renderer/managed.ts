@@ -73,10 +73,12 @@ export function parseHeader(
  *
  * Behaviour:
  * 1. If the target does not exist → write header + body, record in report.written.
- * 2. If the target exists with a valid FDE_MANAGED header and matching hash
- *    → overwrite (idempotent), record in report.written.
- * 3. If the target exists with a valid FDE_MANAGED header but mismatched hash
- *    (manual edit detected) → do NOT overwrite, record conflict.
+ * 2. If the target exists with a valid FDE_MANAGED header and its body still
+ *    matches the header hash (not hand-edited) → overwrite with the new
+ *    content, record in report.written.
+ * 3. If the target exists with a valid FDE_MANAGED header but its body no
+ *    longer matches the header hash (manual edit detected) → do NOT
+ *    overwrite, record conflict.
  * 4. If the target exists WITHOUT an FDE_MANAGED header (non-managed file)
  *    → write to `.fde-conflict/` sibling, record conflict.
  */
@@ -120,13 +122,15 @@ export function writeManaged(
   const parsed = findManagedHeader(existing);
 
   if (parsed) {
-    // Existing file is FDE-managed
-    if (parsed.hash === hash) {
-      // Case 2: same content → idempotent overwrite
+    // Existing file is FDE-managed. It is untouched when its body (the file
+    // minus the header line) still hashes to the value in the header.
+    const untouched = contentHash(stripManagedHeader(existing)) === parsed.hash;
+    if (untouched || parsed.hash === hash) {
+      // Case 2: untouched since last render, or same content → overwrite
       fs.writeFileSync(fullPath, fullContent, "utf8");
       report.written.push(file.path);
     } else {
-      // Case 3: hash mismatch — manual edit detected
+      // Case 3: body no longer matches its header hash: manual edit detected
       report.skipped.push(file.path);
       report.conflicts.push({
         targetPath: file.path,
@@ -190,6 +194,22 @@ function buildManagedContent(header: string, content: string): string {
 
   // No frontmatter — prepend as before
   return `${header}\n${content}`;
+}
+
+/**
+ * Remove the FDE_MANAGED header line, returning the body exactly as it was
+ * passed to `buildManagedContent` (which inserts exactly one header line).
+ */
+function stripManagedHeader(content: string): string {
+  const lines = content.split("\n");
+  const limit = Math.min(lines.length, 30);
+  for (let i = 0; i < limit; i++) {
+    if (parseHeader(lines[i]!)) {
+      lines.splice(i, 1);
+      return lines.join("\n");
+    }
+  }
+  return content;
 }
 
 /**
